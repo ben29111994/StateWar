@@ -11,12 +11,14 @@ public class EffectManager : MonoBehaviour
     {
         instance = this;
     }
-    
-    public virtual void Item(Vector3 _pos)
+
+    [System.Obsolete]
+    public virtual void Item(Vector3 _pos, Color color)
     {
-        GameObject _go = PoolManager.Instance.GetObject(PoolManager.NameObject.Item) as GameObject;
+        GameObject _go = PoolManager.Instance.GetObject(PoolManager.NameObject.Effect) as GameObject;
         _go.transform.position = new Vector3(_pos.x, 0.01f, _pos.z);
-        StartCoroutine(C_Active(_go, 1.0f));
+        var setColorParticle = _go.GetComponent<ParticleSystem>();
+        setColorParticle.startColor = color;
     }
 
     private IEnumerator C_Active(GameObject _go,float _time)

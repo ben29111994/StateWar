@@ -12,10 +12,9 @@ namespace ProjectDawn.Navigation.Sample.Zerg
         {
             Entities.ForEach((Entity entity, Transform transform, in UnitDead unitDead) =>
             {
-                //GameObject.Destroy(transform.gameObject);
-                transform.gameObject.SetActive(false);
-                //transform.GetComponent<UnitAuthoring>().SpawnPoint.GetComponent<>()
-                //EntityManager.DestroyEntity(entity);
+                //transform.gameObject.SetActive(false);
+                GameObject.Destroy(transform.gameObject);
+                EntityManager.DestroyEntity(entity);
             }).WithStructuralChanges().WithoutBurst().Run();
         }
     }

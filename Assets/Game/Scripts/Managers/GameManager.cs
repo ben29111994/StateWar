@@ -54,7 +54,6 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.Show_InGameUI();
             TimerController.Instance.StartTimer();
             FlagController.Instance.StartGenerate();
-            RedController.Instance.Active();
             StartAI();
         }
     }
@@ -90,7 +89,6 @@ public class GameManager : MonoBehaviour
 
         FlagController.Instance.StopGenerate();
         TimerController.Instance.ResetTimer();
-        RedController.Instance.Refresh();
     }
 
     private void StartAI()
@@ -117,7 +115,6 @@ public class GameManager : MonoBehaviour
     private IEnumerator C_Complete()
     {
         for (int i = 0; i < player.Length; i++) player[i].Complete();
-        RedController.Instance.Refresh();
         LevelUp();
         UIManager.Instance.OverTIme.SetActive(true);
         yield return new WaitForSeconds(1.0f);

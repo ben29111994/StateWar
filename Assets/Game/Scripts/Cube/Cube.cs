@@ -114,14 +114,10 @@ public class Cube : MonoBehaviour
         cubeType = CubeType.Green;
     }
 
-   // [NaughtyAttributes.Button]
+    // [NaughtyAttributes.Button]
     public void SetBlack(bool _isColor)
     {
-        if (_isColor)
-        {
-            Color _c = TestController.Instance.TypeDeFaultCube == 0 ? c_Black : C_White;
-            ChangeColorMaterial(_c);
-        }
+        ChangeColorMaterial(c_Black);
         cubeType = CubeType.Black;
         redCubeTrigger.SetActive(false);
     }
@@ -153,7 +149,7 @@ public class Cube : MonoBehaviour
             yield break;
         }
 
-        Color colorA = TestController.Instance.TypeDeFaultCube == 0 ? c_Black : C_White;
+        Color colorA = c_Black;
         Color colorB = _targetColor;
         float time = 0.0f;
         while(time < _time)

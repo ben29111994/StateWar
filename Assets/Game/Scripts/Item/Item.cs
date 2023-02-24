@@ -37,7 +37,7 @@ public class Item : MonoBehaviour
 
     public void Hide()
     {
-        EffectManager.Instance.Item(transform.position);
+        EffectManager.Instance.Item(transform.position, Color.white);
         gameObject.SetActive(false);
     }
 

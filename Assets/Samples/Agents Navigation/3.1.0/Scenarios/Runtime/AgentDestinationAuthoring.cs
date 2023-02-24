@@ -1,5 +1,6 @@
 using UnityEngine;
 using ProjectDawn.Navigation.Hybrid;
+using System.Collections.Generic;
 
 namespace ProjectDawn.Navigation.Sample.Scenarios
 {
@@ -7,14 +8,15 @@ namespace ProjectDawn.Navigation.Sample.Scenarios
     [DisallowMultipleComponent]
     public class AgentDestinationAuthoring : MonoBehaviour
     {
-        public Transform Target;
+        public List<Transform> listTarget = new List<Transform>();
         public float Radius;
 
         private void Start()
         {
             var agent = transform.GetComponent<AgentAuthoring>();
             var body = agent.EntityBody;
-            body.Destination = Target.position;
+            var pickTarget = listTarget[Random.Range(0, listTarget.Count - 1)];
+            body.Destination = pickTarget.position;
             body.IsStopped = false;
             agent.EntityBody = body;
         }
