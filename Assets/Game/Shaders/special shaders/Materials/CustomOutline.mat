@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CustomOutline
-  m_Shader: {fileID: 4800000, guid: cd5a1e17c7b45c94396713b4ee2211d6, type: 3}
+  m_Shader: {fileID: 4800000, guid: 5ae50923f7c378845aa467f9c49146b2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -86,7 +86,7 @@ Material:
     - _OcclusionStrength: 1
     - _OutlineDot: 0.25
     - _OutlineDot2: 0.5
-    - _OutlineExtrusion: 0
+    - _OutlineExtrusion: 0.02
     - _OutlineSpeed: 50
     - _P: 1
     - _Parallax: 0.02
@@ -98,7 +98,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BrightColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0, g: 0.7529412, b: 1, a: 1}
+    - _Color: {r: 1, g: 0.93018866, b: 0.7018868, a: 1}
     - _DarkColor: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor1: {r: 1, g: 1, b: 1, a: 1}
     - _DissolveColor2: {r: 1, g: 1, b: 1, a: 1}

@@ -46,22 +46,23 @@ namespace ProjectDawn.Navigation.Sample.Zerg
             var selection = SystemAPI.GetSingletonRW<Singleton>();
             var selectectEntities = selection.ValueRW.SelectedEntities;
 
-            if (m_Gestures.Selection(out Rect rect))
+            if (m_Gestures.Swipe(out Rect rect))
             {
                 m_SelectionRectangle.Show(rect);
-            }
-
-            if (m_Gestures.SelectionExit(out rect))
-            {
                 selectectEntities.Clear();
                 Entities.ForEach((Entity entity, in Unit unit, in LocalTransform transform) =>
                 {
                     Vector3 position = Camera.main.WorldToScreenPoint(transform.Position);
                     if (rect.Contains(position) && unit.Owner == PlayerId.Red)
                     {
+                        //gameObject.transform.GetComponentInChildren<SpriteRenderer>().enabled = true;
                         selectectEntities.Add(entity);
                     }
                 }).WithoutBurst().Run();
+            }
+
+            if (m_Gestures.SelectionExit(out rect))
+            {
                 m_SelectionRectangle.Hide();
             }
         }

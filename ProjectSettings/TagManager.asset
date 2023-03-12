@@ -8,6 +8,8 @@ TagManager:
   - Enemy2
   - Enemy3
   - Enemy4
+  - Cube
+  - RedCube
   layers:
   - Default
   - TransparentFX
@@ -15,11 +17,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - PlayerOutline
+  - Enemy
+  - EnemyOutline
+  - Global
   - 
   - 
   - 
