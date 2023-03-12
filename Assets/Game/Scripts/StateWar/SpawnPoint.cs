@@ -16,7 +16,7 @@ public class SpawnPoint : MonoBehaviour
     public float spawnInterval;
     public TextMesh spawnCountUI;
     WaitForSeconds intervalCache;
-    int currentSpawn = 0;
+    public int currentSpawn = 0;
 
     void Start()
     {

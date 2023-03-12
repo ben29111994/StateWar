@@ -1,3 +1,4 @@
+using ProjectDawn.Navigation.Sample.Zerg;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,18 @@ using UnityEngine;
 public class UnitCommand : MonoBehaviour
 {
     public SpawnPoint spawnPoint;
+    public UnitAuthoring unitCommand;
+
+    private void Awake()
+    {
+        unitCommand = GetComponent<UnitAuthoring>();
+    }
+
+    private void OnEnable()
+    {
+        //Adjust Move Speed
+        unitCommand.MoveAnimationSpeed = 0.05f + spawnPoint.currentSpawn * 0.05f;
+    }
 
     private void OnDisable()
     {

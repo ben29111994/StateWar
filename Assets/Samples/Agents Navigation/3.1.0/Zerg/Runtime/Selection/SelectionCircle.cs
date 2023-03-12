@@ -13,7 +13,7 @@ namespace ProjectDawn.Navigation.Sample.Zerg
 
         public void Draw(float3 position, float scale)
         {
-            Graphics.DrawMesh(Mesh, Matrix4x4.TRS(position + Offset, quaternion.RotateX(math.radians(90)), Vector3.one * scale), Material, 0);
+            Graphics.DrawMesh(Mesh, Matrix4x4.TRS(position + Offset, quaternion.RotateX(math.radians(90)), Vector3.one * scale * 1.5f), Material, 0);
         }
     }
 }

@@ -23,10 +23,10 @@ namespace ProjectDawn.Navigation.Sample.Zerg
             m_LifeBar.UpdateProperties();
 
             //Show LifeBar UI
-            Entities.ForEach((in UnitLife life, in AgentShape shape, in LocalTransform transform) =>
-            {
-                m_LifeBar.Draw(transform.Position, life.Life / life.MaxLife, (int)(shape.Radius / 0.2f), shape.Radius, shape.Height);
-            }).WithoutBurst().Run();
+            //Entities.ForEach((in UnitLife life, in AgentShape shape, in LocalTransform transform) =>
+            //{
+            //    m_LifeBar.Draw(transform.Position, life.Life / life.MaxLife, (int)(shape.Radius / 0.2f), shape.Radius, shape.Height);
+            //}).WithoutBurst().Run();
         }
     }
 }

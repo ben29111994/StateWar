@@ -1572,6 +1572,7 @@ MonoBehaviour:
   unitColor: {r: 0, g: 0.7529412, b: 1, a: 1}
   spawnInterval: 1
   spawnCountUI: {fileID: 1842112630}
+  currentSpawn: 0
 --- !u!114 &862865464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2604,6 +2605,7 @@ MonoBehaviour:
   unitColor: {r: 0, g: 0.7529412, b: 1, a: 1}
   spawnInterval: 0.2
   spawnCountUI: {fileID: 1648950308}
+  currentSpawn: 0
 --- !u!1 &1588768060
 GameObject:
   m_ObjectHideFlags: 0
@@ -2669,6 +2671,7 @@ MonoBehaviour:
   unitColor: {r: 1, g: 0.05688629, b: 0, a: 1}
   spawnInterval: 0.5
   spawnCountUI: {fileID: 1464343010}
+  currentSpawn: 0
 --- !u!1 &1640506251
 GameObject:
   m_ObjectHideFlags: 0
@@ -3457,6 +3460,7 @@ MonoBehaviour:
   unitColor: {r: 1, g: 0.05688629, b: 0, a: 1}
   spawnInterval: 0.5
   spawnCountUI: {fileID: 87393763}
+  currentSpawn: 0
 --- !u!114 &1957709346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4096,6 +4100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
+  unitCommand: {fileID: 0}
 --- !u!114 &7215712897198836907
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4249,6 +4254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoint: {fileID: 0}
+  unitCommand: {fileID: 0}
 --- !u!114 &8520334731300077860
 MonoBehaviour:
   m_ObjectHideFlags: 0
