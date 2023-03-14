@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4422665, g: 0.49111754, b: 0.57097733, a: 1}
+  m_IndirectSpecularColor: {r: 0.44479263, g: 0.49434042, b: 0.5735395, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -144,6 +144,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 725b04e9742cce44fb66106435a65294,
         type: 3}
+    - target: {fileID: 11400000, guid: c67729c85f4468944ac990e3033e29f7, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: c67729c85f4468944ac990e3033e29f7, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: c67729c85f4468944ac990e3033e29f7, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 22400000, guid: c67729c85f4468944ac990e3033e29f7, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -268,7 +280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!102 &87393763
 TextMesh:
   serializedVersion: 3
@@ -284,13 +296,13 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 20
-  m_FontStyle: 0
+  m_FontSize: 25
+  m_FontStyle: 1
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 2d4c1c50184f2df4590cb4f83e90e47a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4294967295
 --- !u!23 &87393764
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -341,7 +353,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 87393762}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 12, y: 0, z: 12}
+  m_LocalPosition: {x: 12, y: 1, z: 12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -464,10 +476,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 080ca39e99d4cd548b986b94caecbb32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sizeSelection: 50
+  sizeSelection: 128
   OBG: {fileID: 8059875965375492786, guid: d2e5a75367476514cb5506d93342a272, type: 3}
   TouchPosition: {fileID: 0}
   Manager: 0
+  line: {fileID: 129181195}
 --- !u!4 &129181194
 Transform:
   m_ObjectHideFlags: 0
@@ -491,7 +504,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129181192}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -584,8 +597,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0.19607843}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 0, g: 0, b: 0, a: 0.19607843}
+      key1: {r: 0, g: 0, b: 0, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 1}
       key3: {r: 0, g: 0, b: 0, a: 1}
       key4: {r: 0, g: 0, b: 0, a: 0.19607843}
@@ -2146,7 +2159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!102 &1464343010
 TextMesh:
   serializedVersion: 3
@@ -2162,13 +2175,13 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 20
-  m_FontStyle: 0
+  m_FontSize: 25
+  m_FontStyle: 1
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 2d4c1c50184f2df4590cb4f83e90e47a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4294967295
 --- !u!23 &1464343011
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2219,7 +2232,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1464343009}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -12, y: 0, z: 12}
+  m_LocalPosition: {x: -12, y: 1, z: 12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2762,7 +2775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!102 &1648950308
 TextMesh:
   serializedVersion: 3
@@ -2778,13 +2791,13 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 20
-  m_FontStyle: 0
+  m_FontSize: 25
+  m_FontStyle: 1
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 2d4c1c50184f2df4590cb4f83e90e47a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4294967295
 --- !u!23 &1648950309
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2835,7 +2848,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1648950307}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 12, y: 0, z: -15}
+  m_LocalPosition: {x: 12, y: 1, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3141,7 +3154,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842112628}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -12, y: 0, z: -15}
+  m_LocalPosition: {x: -12, y: 1, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3165,13 +3178,13 @@ TextMesh:
   m_Anchor: 4
   m_Alignment: 1
   m_TabSize: 4
-  m_FontSize: 20
-  m_FontStyle: 0
+  m_FontSize: 25
+  m_FontStyle: 1
   m_RichText: 1
   m_Font: {fileID: 12800000, guid: 2d4c1c50184f2df4590cb4f83e90e47a, type: 3}
   m_Color:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4294967295
 --- !u!23 &1842112631
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3791,7 +3804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MotionType: 2
-  Speed: 6.58
+  Speed: 6
   Acceleration: 8
   AngularSpeed: 400
   StoppingDistance: 0.1
@@ -3959,7 +3972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed5c6dd07c7d6e4f857b420fa8f559a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius: 0.41
+  Radius: 0.4
   Height: 1
 --- !u!114 &4596112334955372997
 MonoBehaviour:
@@ -3991,7 +4004,7 @@ MonoBehaviour:
   Angle: 135
   Mode: 3
   BlockedStop: 0
-  UseWalls: 1
+  UseWalls: 0
 --- !u!1 &6010206441633808898
 GameObject:
   m_ObjectHideFlags: 0
@@ -4049,10 +4062,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MotionType: 2
-  Speed: 6.58
+  Speed: 6
   Acceleration: 8
   AngularSpeed: 400
-  StoppingDistance: 0.1
+  StoppingDistance: 0.05
   AutoBreaking: 1
 --- !u!114 &6553801289298048189
 MonoBehaviour:
@@ -4126,7 +4139,7 @@ MonoBehaviour:
     Texture: {fileID: 0}
     Kernel: 1
     Channels: {x: 1, y: 1, z: 1, w: 1}
-  color: {r: 1, g: 0.061452508, b: 0, a: 1}
+  color: {r: 1, g: 0.20722316, b: 0.15566039, a: 1}
   opacity: 1
   angle: 0
   scale: {x: 1, y: 1, z: 1}
@@ -4239,7 +4252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed5c6dd07c7d6e4f857b420fa8f559a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius: 0.41
+  Radius: 0.4
   Height: 1
 --- !u!114 &8520334731300077858
 MonoBehaviour:
@@ -4280,7 +4293,7 @@ MonoBehaviour:
     Texture: {fileID: 0}
     Kernel: 1
     Channels: {x: 1, y: 1, z: 1, w: 1}
-  color: {r: 0, g: 0.75132275, b: 1, a: 1}
+  color: {r: 0.1745283, g: 0.7952317, b: 1, a: 1}
   opacity: 1
   angle: 0
   scale: {x: 1, y: 1, z: 1}

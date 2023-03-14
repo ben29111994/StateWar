@@ -14,6 +14,7 @@ namespace ProjectDawn.Navigation.Sample.Zerg
         public GameObject OBG;
         public GameObject TouchPosition;
         public int Manager;
+        public LineRenderer line;
 
         public bool Stop()
         {
@@ -128,8 +129,9 @@ namespace ProjectDawn.Navigation.Sample.Zerg
             if (Manager == 1)
             {
                 TouchPosition.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, +10));
-                GetComponent<LineRenderer>().SetPosition(0, startPos);
-                GetComponent<LineRenderer>().SetPosition(1, TouchPosition.transform.position);
+                line.enabled = true;
+                line.SetPosition(0, startPos);
+                line.SetPosition(1, TouchPosition.transform.position);
             }
         }
 
@@ -145,8 +147,9 @@ namespace ProjectDawn.Navigation.Sample.Zerg
         {
             Manager = 0;
             Destroy(TouchPosition);
-            GetComponent<LineRenderer>().SetPosition(0, Vector3.zero);
-            GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
+            line.enabled = false;
+            line.SetPosition(0, Vector3.zero);
+            line.SetPosition(1, Vector3.zero);
         }
     }
 }
