@@ -35,6 +35,7 @@ public class Item : MonoBehaviour
         rigid.AddForce(force);
     }
 
+    [System.Obsolete]
     public void Hide()
     {
         EffectManager.Instance.Item(transform.position, Color.white);

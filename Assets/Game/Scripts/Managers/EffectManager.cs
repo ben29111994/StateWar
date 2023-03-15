@@ -19,6 +19,7 @@ public class EffectManager : MonoBehaviour
         _go.transform.position = new Vector3(_pos.x, 0.01f, _pos.z);
         var setColorParticle = _go.GetComponent<ParticleSystem>();
         setColorParticle.startColor = color;
+        _go.SetActive(true);
     }
 
     private IEnumerator C_Active(GameObject _go,float _time)

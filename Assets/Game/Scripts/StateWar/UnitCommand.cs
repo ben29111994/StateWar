@@ -19,6 +19,7 @@ public class UnitCommand : MonoBehaviour
         unitCommand.MoveAnimationSpeed = 0.05f + spawnPoint.currentSpawn * 0.05f;
     }
 
+    [System.Obsolete]
     private void OnDisable()
     {
         spawnPoint.OnUnitDead();

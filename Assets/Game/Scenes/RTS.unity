@@ -280,7 +280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!102 &87393763
 TextMesh:
   serializedVersion: 3
@@ -2159,7 +2159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!102 &1464343010
 TextMesh:
   serializedVersion: 3
@@ -2775,7 +2775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!102 &1648950308
 TextMesh:
   serializedVersion: 3
@@ -3745,7 +3745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74f1141745348f547a3d1f6495ad3e37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius: 6
+  Radius: 0.1
 --- !u!4 &1732811770270597699
 Transform:
   m_ObjectHideFlags: 0
@@ -4065,7 +4065,7 @@ MonoBehaviour:
   Speed: 6
   Acceleration: 8
   AngularSpeed: 400
-  StoppingDistance: 0.05
+  StoppingDistance: 0.1
   AutoBreaking: 1
 --- !u!114 &6553801289298048189
 MonoBehaviour:
@@ -4098,7 +4098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 796189d3fb74b6149863149f19cfe4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 300
+  Damage: 100
   AttackRange: 1
 --- !u!114 &7215712897198836905
 MonoBehaviour:

@@ -68,6 +68,7 @@ public class SpawnPoint : MonoBehaviour
     public void OnUnitDead()
     {
         currentSpawn--;
-        spawnCountUI.text = currentSpawn.ToString();
+        if(spawnCountUI != null)
+            spawnCountUI.text = currentSpawn.ToString();
     }
 }
