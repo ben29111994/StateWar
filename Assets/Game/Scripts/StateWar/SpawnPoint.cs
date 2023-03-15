@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
+using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +19,19 @@ public class SpawnPoint : MonoBehaviour
     public TextMesh spawnCountUI;
     WaitForSeconds intervalCache;
     public int currentSpawn = 0;
+    private readonly List<GameObject> _spawnedUnits = new List<GameObject>();
+    private List<Vector3> _points = new List<Vector3>();
+    public FormationBase _formation;
+
+    public FormationBase Formation
+    {
+        get
+        {
+            if (_formation == null) _formation = GetComponent<FormationBase>();
+            return _formation;
+        }
+        set => _formation = value;
+    }
 
     void Start()
     {
@@ -31,8 +46,8 @@ public class SpawnPoint : MonoBehaviour
 #if UNITY_5_6_OR_NEWER
         InstancedMaterial.enableInstancing = true;
 #endif
-        GameObject newInstance = null;
-        newInstance = Instantiate(prefab);
+        GameObject newUnit = null;
+        newUnit = Instantiate(prefab);
         //switch (typePrefab)
         //{
         //    case "Player":
@@ -44,24 +59,42 @@ public class SpawnPoint : MonoBehaviour
         //    default:
         //        break;
         //}
-        if (newInstance != null)
+        if (newUnit != null)
         {
             MaterialPropertyBlock matpropertyBlock = new MaterialPropertyBlock();
             Color newColor = unitColor;
             matpropertyBlock.SetColor("_Color", newColor);
-            newInstance.GetComponent<MeshRenderer>().SetPropertyBlock(matpropertyBlock);
-            newInstance.tag = unitTag;
-            newInstance.transform.position = transform.parent.position;
-            newInstance.GetComponent<UnitCommand>().spawnPoint = this;
-            newInstance.SetActive(true);
+            newUnit.GetComponent<MeshRenderer>().SetPropertyBlock(matpropertyBlock);
+            newUnit.tag = unitTag;
+            newUnit.transform.position = transform.parent.position;
+            newUnit.GetComponent<UnitCommand>().spawnPoint = this;
+            newUnit.SetActive(true);
+            newUnit.transform.parent = transform;
             currentSpawn++;
             spawnCountUI.text = currentSpawn.ToString();
+            _spawnedUnits.Add(newUnit);
             yield return intervalCache;
             while (currentSpawn >= maxSpawn)
             {
                 yield return null;
             }
+            //SetFormation();
             StartCoroutine(Spawn());
+        }
+    }
+
+    //private void FixedUpdate()
+    //{
+    //    SetFormation();
+    //}
+
+    private void SetFormation()
+    {
+        _points = Formation.EvaluatePoints().ToList();
+        for (var i = 0; i < _spawnedUnits.Count; i++)
+        {
+            //_spawnedUnits[i].transform.position = Vector3.MoveTowards(_spawnedUnits[i].transform.position, transform.position + _points[i], 15 * Time.deltaTime);
+            _spawnedUnits[i].transform.position = transform.position + _points[i];
         }
     }
 

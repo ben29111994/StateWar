@@ -10,6 +10,8 @@ TagManager:
   - Enemy4
   - Cube
   - RedCube
+  - Touch
+  - Ground
   layers:
   - Default
   - TransparentFX

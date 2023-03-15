@@ -50,12 +50,12 @@ namespace ProjectDawn.Navigation.Sample.Zerg
             {
                 m_SelectionRectangle.Show(rect);
                 selectectEntities.Clear();
-                Entities.ForEach((Entity entity, in Unit unit, in LocalTransform transform) =>
+                Entities.ForEach((Entity entity, Transform transformUnit, in Unit unit, in LocalTransform transform) =>
                 {
                     Vector3 position = Camera.main.WorldToScreenPoint(transform.Position);
                     if (rect.Contains(position) && unit.Owner == PlayerId.Red)
                     {
-                        //gameObject.transform.GetComponentInChildren<SpriteRenderer>().enabled = true;
+                        Gestures.listSelected.Add(transformUnit.gameObject);
                         selectectEntities.Add(entity);
                     }
                 }).WithoutBurst().Run();

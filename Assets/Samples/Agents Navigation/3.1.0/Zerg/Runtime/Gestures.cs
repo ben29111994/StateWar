@@ -1,11 +1,15 @@
+using System.Collections.Generic;
+using System.Linq;
 using Codice.Client.BaseCommands;
 using Unity.Mathematics;
 using UnityEngine;
+using static Codice.Client.BaseCommands.WkStatus.Printers.PrintPendingChangesInTableFormat;
 
 namespace ProjectDawn.Navigation.Sample.Zerg
 {
     public class Gestures : MonoBehaviour
     {
+        public static Gestures instance;
         float3 m_SelectionStart;
         float3 m_SelectionEnd;
         bool m_Selection;
@@ -15,6 +19,13 @@ namespace ProjectDawn.Navigation.Sample.Zerg
         public GameObject TouchPosition;
         public int Manager;
         public LineRenderer line;
+        public static List<GameObject> listSelected = new List<GameObject>();
+        public GameObject debugCube;
+
+        private void Start()
+        {
+            instance = this;
+        }
 
         public bool Stop()
         {
@@ -136,8 +147,18 @@ namespace ProjectDawn.Navigation.Sample.Zerg
         }
 
         Vector3 startPos;
+        public static Vector3 formationCenter;
         void OnMouseDown()
         {
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out var hit))
+            {
+                if (hit.transform.gameObject.CompareTag("Ground"))
+                {
+                    formationCenter = hit.point;
+                    debugCube.transform.position = formationCenter;
+                }
+            }
             TouchPosition = Instantiate(OBG, Vector3.zero, Quaternion.identity);
             startPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, +10));
             Manager = 1;
@@ -150,6 +171,7 @@ namespace ProjectDawn.Navigation.Sample.Zerg
             line.enabled = false;
             line.SetPosition(0, Vector3.zero);
             line.SetPosition(1, Vector3.zero);
+            listSelected.Clear();
         }
     }
 }

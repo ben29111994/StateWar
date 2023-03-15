@@ -280,7 +280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!102 &87393763
 TextMesh:
   serializedVersion: 3
@@ -456,7 +456,10 @@ GameObject:
   m_Component:
   - component: {fileID: 129181194}
   - component: {fileID: 129181193}
+  - component: {fileID: 129181198}
   - component: {fileID: 129181195}
+  - component: {fileID: 129181196}
+  - component: {fileID: 129181197}
   m_Layer: 0
   m_Name: Gestures
   m_TagString: Untagged
@@ -481,6 +484,7 @@ MonoBehaviour:
   TouchPosition: {fileID: 0}
   Manager: 0
   line: {fileID: 129181195}
+  debugCube: {fileID: 916507868}
 --- !u!4 &129181194
 Transform:
   m_ObjectHideFlags: 0
@@ -636,6 +640,59 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
+--- !u!114 &129181196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129181192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcfad69e23d1bcb40b2d7ad4b423e3e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _noise: 0
+  Spread: 1
+  _amount: 10
+  _radius: 1
+  _radiusGrowthMultiplier: 0.05
+  _rotations: 5
+  _rings: 1
+  _ringOffset: 1
+  _nthOffset: 0
+--- !u!114 &129181197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129181192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de2240909800957478cb1b0afb0bc89a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _noise: 0
+  Spread: 1
+  _unitWidth: 5
+  _unitDepth: 5
+  _hollow: 0
+  _nthOffset: 0
+--- !u!114 &129181198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129181192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ceba0a91d344581b78a7bcae2d8920, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  line: {fileID: 129181195}
+  _formation: {fileID: 129181196}
 --- !u!1 &198259302
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,7 +1212,7 @@ GameObject:
   - component: {fileID: 684674625}
   m_Layer: 10
   m_Name: GlobalGround
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -1583,9 +1640,10 @@ MonoBehaviour:
   maxSpawn: 100
   unitTag: Player
   unitColor: {r: 0, g: 0.7529412, b: 1, a: 1}
-  spawnInterval: 1
+  spawnInterval: 0.2
   spawnCountUI: {fileID: 1842112630}
   currentSpawn: 0
+  _formation: {fileID: 129181196}
 --- !u!114 &862865464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1678,6 +1736,89 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 874342899}
   m_CullTransparentMesh: 1
+--- !u!1 &916507868
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 916507872}
+  - component: {fileID: 916507871}
+  - component: {fileID: 916507870}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &916507870
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916507868}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 58ab003d979d0f946b14fd0a92727200, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &916507871
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916507868}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &916507872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916507868}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &947023054
 GameObject:
   m_ObjectHideFlags: 0
@@ -2159,7 +2300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!102 &1464343010
 TextMesh:
   serializedVersion: 3
@@ -2619,6 +2760,7 @@ MonoBehaviour:
   spawnInterval: 0.2
   spawnCountUI: {fileID: 1648950308}
   currentSpawn: 0
+  _formation: {fileID: 129181196}
 --- !u!1 &1588768060
 GameObject:
   m_ObjectHideFlags: 0
@@ -2685,6 +2827,7 @@ MonoBehaviour:
   spawnInterval: 0.5
   spawnCountUI: {fileID: 1464343010}
   currentSpawn: 0
+  _formation: {fileID: 129181196}
 --- !u!1 &1640506251
 GameObject:
   m_ObjectHideFlags: 0
@@ -2775,7 +2918,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!102 &1648950308
 TextMesh:
   serializedVersion: 3
@@ -2888,19 +3031,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ObjectPools:
   - parent: {fileID: 0}
-    objectPrefab: {fileID: 1732811770270597710}
-    nameObject: 0
-    listObject: []
-  - parent: {fileID: 0}
-    objectPrefab: {fileID: 6010206441633808898}
-    nameObject: 1
-    listObject: []
-  - parent: {fileID: 0}
     objectPrefab: {fileID: 8603793495483660485, guid: 4bf5b1ff252e8c04cb3cd2ab2b8a0ae8,
       type: 3}
     nameObject: 4
     listObject: []
-  amount: 1000
+  amount: 500
 --- !u!4 &1659273195
 Transform:
   m_ObjectHideFlags: 0
@@ -3141,7 +3276,7 @@ GameObject:
   - component: {fileID: 1842112630}
   m_Layer: 0
   m_Name: PlayerSpawnPoints
-  m_TagString: Area A
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3474,6 +3609,7 @@ MonoBehaviour:
   spawnInterval: 0.5
   spawnCountUI: {fileID: 87393763}
   currentSpawn: 0
+  _formation: {fileID: 129181196}
 --- !u!114 &1957709346
 MonoBehaviour:
   m_ObjectHideFlags: 0
