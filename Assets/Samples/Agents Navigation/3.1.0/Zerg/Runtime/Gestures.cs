@@ -20,7 +20,7 @@ namespace ProjectDawn.Navigation.Sample.Zerg
         public int Manager;
         public LineRenderer line;
         public static List<GameObject> listSelected = new List<GameObject>();
-        public GameObject debugCube;
+        public FlockGroup agentGroup;
 
         private void Start()
         {
@@ -156,7 +156,7 @@ namespace ProjectDawn.Navigation.Sample.Zerg
                 if (hit.transform.gameObject.CompareTag("Ground"))
                 {
                     formationCenter = hit.point;
-                    debugCube.transform.position = formationCenter;
+                    Debug.LogError(hit.point);
                 }
             }
             TouchPosition = Instantiate(OBG, Vector3.zero, Quaternion.identity);

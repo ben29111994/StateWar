@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ProjectDawn.Navigation.Sample.Zerg;
 
 public class BoxFormation : FormationBase {
     [SerializeField] private int _unitWidth = 5;
@@ -11,7 +12,7 @@ public class BoxFormation : FormationBase {
 
     public override IEnumerable<Vector3> EvaluatePoints() {
         var middleOffset = new Vector3(_unitWidth * 0.5f, 0, _unitDepth * 0.5f);
-
+        _unitDepth = (int)((float)Gestures.listSelected.Count / (float)_unitWidth);
         for (var x = 0; x < _unitWidth; x++) {
             for (var z = 0; z < _unitDepth; z++) {
                 if (_hollow && x != 0 && x != _unitWidth - 1 && z != 0 && z != _unitDepth - 1) continue;

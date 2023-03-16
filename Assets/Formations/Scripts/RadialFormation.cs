@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ProjectDawn.Navigation.Sample.Zerg;
 
 public class RadialFormation : FormationBase {
     [SerializeField] private int _amount = 10;
@@ -13,6 +14,7 @@ public class RadialFormation : FormationBase {
     [SerializeField] private float _nthOffset = 0;
 
     public override IEnumerable<Vector3> EvaluatePoints() {
+        //_amount = Gestures.listSelected.Count;
         var amountPerRing = _amount / _rings;
         var ringOffset = 0f;
         for (var i = 0; i < _rings; i++) {

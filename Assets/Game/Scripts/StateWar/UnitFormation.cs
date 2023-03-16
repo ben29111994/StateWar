@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using ProjectDawn.Navigation.Sample.Zerg;
+using ProjectDawn.Navigation.Sample.Scenarios;
 
 public class UnitFormation : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class UnitFormation : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -39,7 +40,15 @@ public class UnitFormation : MonoBehaviour
         _points = Formation.EvaluatePoints().ToList();
         for (var i = 0; i < Gestures.listSelected.Count; i++)
         {
-            Gestures.listSelected[i].transform.position = Vector3.MoveTowards(Gestures.listSelected[i].transform.position, Gestures.formationCenter + _points[i], 10 * Time.deltaTime);
+            if (i < _points.Count)
+            {
+                var moveIn = Gestures.listSelected[i].GetComponent<AgentDestinationAuthoring>();
+                moveIn.enabled = false;
+                moveIn.listTarget.Clear();
+                moveIn.listTarget.Add(Gestures.formationCenter + _points[i]);
+                moveIn.enabled = true;
+                //Gestures.listSelected[i].transform.position = Vector3.MoveTowards(Gestures.listSelected[i].transform.position, Gestures.formationCenter + _points[i], 15 * Time.deltaTime);
+            }
         }
     }
 }

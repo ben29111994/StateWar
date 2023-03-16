@@ -55,7 +55,10 @@ namespace ProjectDawn.Navigation.Sample.Zerg
                     Vector3 position = Camera.main.WorldToScreenPoint(transform.Position);
                     if (rect.Contains(position) && unit.Owner == PlayerId.Red)
                     {
-                        Gestures.listSelected.Add(transformUnit.gameObject);
+                        if (!Gestures.listSelected.Contains(transformUnit.gameObject))
+                        {
+                            Gestures.listSelected.Add(transformUnit.gameObject);
+                        }
                         selectectEntities.Add(entity);
                     }
                 }).WithoutBurst().Run();

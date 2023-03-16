@@ -33,7 +33,7 @@ public class SpawnPoint : MonoBehaviour
         set => _formation = value;
     }
 
-    void Start()
+    void OnEnable()
     {
         currentSpawn = 0;
         instance = this;
@@ -78,7 +78,7 @@ public class SpawnPoint : MonoBehaviour
             {
                 yield return null;
             }
-            //SetFormation();
+            SetFormation();
             StartCoroutine(Spawn());
         }
     }
@@ -94,7 +94,8 @@ public class SpawnPoint : MonoBehaviour
         for (var i = 0; i < _spawnedUnits.Count; i++)
         {
             //_spawnedUnits[i].transform.position = Vector3.MoveTowards(_spawnedUnits[i].transform.position, transform.position + _points[i], 15 * Time.deltaTime);
-            _spawnedUnits[i].transform.position = transform.position + _points[i];
+            if (i < _points.Count)
+                _spawnedUnits[i].transform.position = transform.position + _points[i];
         }
     }
 
