@@ -32,7 +32,7 @@ MonoBehaviour:
     value: 1
   scale:
     overrideState: 1
-    value: 2
+    value: 3
   color:
     overrideState: 1
     value: {r: 0.13207549, g: 0.13207549, b: 0.13207549, a: 1}

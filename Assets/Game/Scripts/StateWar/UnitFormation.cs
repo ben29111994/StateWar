@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using ProjectDawn.Navigation.Sample.Zerg;
 using ProjectDawn.Navigation.Sample.Scenarios;
+using Unity.Mathematics;
 
 public class UnitFormation : MonoBehaviour
 {
@@ -28,14 +29,14 @@ public class UnitFormation : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         //if (line.enabled == true)
         //{
         //    SetFormation();
         //}
 
-        if (Input.GetMouseButtonUp(0) && Gestures.listSelected.Count > 0)
+        if (Input.GetMouseButtonUp(0))
         {
             SetFormation();
         }
@@ -44,21 +45,22 @@ public class UnitFormation : MonoBehaviour
     private void SetFormation()
     {
         Debug.LogError("Run");
-        var direction = line.GetPosition(line.positionCount - 1) - line.GetPosition(0);
-        formationPos.transform.position = new Vector3(Gestures.formationCenter.x, 0, Gestures.formationCenter.z);
-        formationPos.transform.rotation = Quaternion.LookRotation(direction);
-        formationPos.transform.eulerAngles = new Vector3(0, formationPos.transform.eulerAngles.y, 0);
+        var centerPoint = (Gestures.startMove + Gestures.endMove) / 2;
+        var formationCenter = centerPoint;
+        Debug.LogError(Gestures.direction);
+        formationPos.transform.rotation = Quaternion.LookRotation(Gestures.direction);
+        formationPos.transform.position = formationCenter;
         //_points = Formation.EvaluatePoints().ToList();
         var index = 0;
-        for (var i = 0; i < Gestures.listSelected.Count; i++)
+        for (var i = 0; i < Gestures.instance.tempSelectedUnit.Count; i++)
         {
             //if (i < _points.Count)
             //{
-                var moveIn = Gestures.listSelected[i].GetComponent<AgentDestinationAuthoring>();
+                var moveIn = Gestures.instance.tempSelectedUnit[i].GetComponent<AgentDestinationAuthoring>();
                 moveIn.enabled = false;
                 moveIn.listTarget.Clear();
                 //moveIn.listTarget.Add(Gestures.formationCenter + _points[i]);
-                moveIn.listTarget.Add(formationPos.GetChild(index).position);
+                moveIn.listTarget.Add(formationPos.GetChild(index).transform);
                 index++;
                 if(index >= formationPos.childCount) { index = 0; }
                 moveIn.enabled = true;

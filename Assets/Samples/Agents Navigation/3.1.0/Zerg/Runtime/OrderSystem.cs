@@ -9,6 +9,8 @@ using UnityEngine.AI;
 using static Unity.Entities.SystemAPI;
 using NavMeshPath = ProjectDawn.Navigation.NavMeshPath;
 using Unity.Collections.LowLevel.Unsafe;
+using static UnityEditor.PlayerSettings;
+using System.Collections.Generic;
 
 namespace ProjectDawn.Navigation.Sample.Zerg
 {
@@ -213,10 +215,38 @@ namespace ProjectDawn.Navigation.Sample.Zerg
 
                 // Check if it needs new formation
                 bool formation = formationCircle.Radius <= maxFormationRadius && formationCount > 1;
-                //formation = true;
+                //bool formation = true;
 
                 // Set new destination for each agent
                 float3 destination = Ray.GetPoint(distanceToEnvironment);
+
+                var _unitWidth = 5;
+                var _unitDepth = 5;
+                bool _hollow = false;
+                var _nthOffset = 0;
+                float Spread = 2;
+                var middleOffset = new Vector3(_unitWidth * 0.5f, 0, _unitDepth * 0.5f);
+                //_unitDepth = (int)((float)Gestures.listSelected.Count / (float)_unitWidth);
+                List<Vector3> listOffset = new List<Vector3>();
+                for (var x = 0; x < _unitWidth; x++)
+                {
+                    for (var z = 0; z < _unitDepth; z++)
+                    {
+                        if (_hollow && x != 0 && x != _unitWidth - 1 && z != 0 && z != _unitDepth - 1) continue;
+                        var pos = new Vector3(x + (z % 2 == 0 ? 0 : _nthOffset), 0, z);
+
+                        pos -= middleOffset;
+
+                        //pos += GetNoise(pos);
+
+                        pos *= Spread;
+
+                        listOffset.Add(pos);
+                    }
+                }
+                Debug.LogError(listOffset.Count);
+
+                int count = 0;
                 foreach (var entity in SelectedEntities)
                 {
                     if (!TransformLookup.TryGetComponent(entity, out LocalTransform transform))
@@ -236,17 +266,21 @@ namespace ProjectDawn.Navigation.Sample.Zerg
                     BrainLookup[entity] = brain;
 
                     // Either move all agents in formation or not
+                    var dis = Vector2.Distance(destination.xz, formationCircle.Center);
+                    Debug.LogError(dis);
                     if (formation)
                     {
                         // For this agent get new formation offset from destination
                         float2 offset = transform.Position.xz - formationCircle.Center;
+                        offset *= 2;
 
                         // Get actual position in navmesh (Jobified version of NavMesh.SamplePosition)
                         var location = NavMesh.MapLocation(destination, path.MappingExtent, path.AgentTypeId, path.AreaMask);
 
                         // Now here we offset location (Jobified version of NavMesh.Raycast)
                         // This is very important in case destination is on the cliff, with this formation position will always be within the cliff
-                        var offsetLocation = NavMesh.MoveLocation(location, location.position + new Vector3(offset.x, 0, offset.y), path.AreaMask);
+                        //var offsetLocation = NavMesh.MoveLocation(location, location.position + new Vector3(offset.x, 0, offset.y), path.AreaMask);
+                        var offsetLocation = NavMesh.MoveLocation(location, location.position + listOffset[count], path.AreaMask);
 
                         // Update to new destination
                         body.Destination = offsetLocation.position;
@@ -260,6 +294,8 @@ namespace ProjectDawn.Navigation.Sample.Zerg
                         body.IsStopped = false;
                         BodyLookup[entity] = body;
                     }
+                    if(count < listOffset.Count - 1)
+                        count++;
                 }
 
                 Confirmation.ValueRW = new ConfirmationSystem.Singleton

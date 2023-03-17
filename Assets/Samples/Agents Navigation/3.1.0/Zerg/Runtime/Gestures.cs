@@ -4,7 +4,10 @@ using Codice.Client.BaseCommands;
 using Unity.Entities.UniversalDelegates;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.TestTools;
+using UnityEngine.UIElements;
 using static Codice.Client.BaseCommands.WkStatus.Printers.PrintPendingChangesInTableFormat;
+using DG.Tweening;
 
 namespace ProjectDawn.Navigation.Sample.Zerg
 {
@@ -21,6 +24,7 @@ namespace ProjectDawn.Navigation.Sample.Zerg
         public int Manager;
         public LineRenderer line;
         public static List<GameObject> listSelected = new List<GameObject>();
+        public GameObject debugCube;
 
         private void Start()
         {
@@ -144,24 +148,28 @@ namespace ProjectDawn.Navigation.Sample.Zerg
                 line.enabled = true;
                 line.SetPosition(0, startPos);
                 line.SetPosition(1, TouchPosition.transform.position);
-                var centerPoint = (startPos + TouchPosition.transform.position)/2;
-                formationCenter = centerPoint;
             }
         }
 
         Vector3 startPos;
         public static Vector3 formationCenter;
+        public static Vector3 startMove;
+        public static Vector3 endMove;
+        public static Vector3 direction;
+        public List<GameObject> tempSelectedUnit = new List<GameObject>();
+        public LayerMask layer;
+
         void OnMouseDown()
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            //if (Physics.Raycast(ray, out var hit))
-            //{
-            //    if (hit.transform.gameObject.CompareTag("Ground"))
-            //    {
-            //        formationCenter = hit.point;
-            //        Debug.LogError(hit.point);
-            //    }
-            //}
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layer))
+            {
+                if (hit.transform.gameObject.CompareTag("Ground"))
+                {
+                    startMove = hit.point;
+                    debugCube.transform.position = startMove;
+                }
+            }
             TouchPosition = Instantiate(OBG, Vector3.zero, Quaternion.identity);
             startPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, +10));
             Manager = 1;
@@ -171,9 +179,20 @@ namespace ProjectDawn.Navigation.Sample.Zerg
         {
             Manager = 0;
             Destroy(TouchPosition);
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layer))
+            {
+                if (hit.transform.gameObject.CompareTag("Ground"))
+                {
+                    endMove = hit.point;
+                    debugCube.transform.position = endMove;
+                }
+            }
+            direction = endMove - startMove;
             line.enabled = false;
             line.SetPosition(0, Vector3.zero);
             line.SetPosition(1, Vector3.zero);
+            tempSelectedUnit = listSelected.ToList();
             listSelected.Clear();
         }
     }
