@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Gopencils
-  productName: Standard Project
+  productName: State Ware
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -155,6 +155,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.gopencils.standardproject
+    iPhone: com.gopencils.statewar
   buildNumber:
     Standalone: 0
     iPhone: 0
@@ -274,7 +275,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 978f5921e87d04a7f88a2dc6c330fab2, type: 3}
+      m_Icon: {fileID: 2800000, guid: c550bb0cbd3237e4a88b543a96518cce, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
@@ -562,7 +563,8 @@ PlayerSettings:
   enableCrashReportAPI: 0
   cameraUsageDescription: 
   locationUsageDescription: 
-  microphoneUsageDescription: 
+  microphoneUsageDescription: We would like to access your microphone for better
+    experience
   bluetoothUsageDescription: 
   macOSTargetOSVersion: 10.13.0
   switchNMETAOverride: 
