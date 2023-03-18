@@ -21,12 +21,14 @@ public class Conquest : MonoBehaviour
             switch (other.tag)
             {
                 case "Player":
+                    GameManager.Instance.Capture(1);
                     currentTeam.SetActive(false);
                     currentTeam = listTeam[0];
                     currentTeam.SetActive(true);
                     transform.GetComponentInChildren<SpriteRenderer>().color = currentTeam.GetComponent<SpawnPoint>().unitColor;
                     break;
                 case "Enemy1":
+                    GameManager.Instance.Capture(-1);
                     currentTeam.SetActive(false);
                     currentTeam = listTeam[1];
                     currentTeam.SetActive(true);

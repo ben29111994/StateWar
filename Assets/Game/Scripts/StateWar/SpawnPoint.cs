@@ -105,4 +105,9 @@ public class SpawnPoint : MonoBehaviour
         if(spawnCountUI != null)
             spawnCountUI.text = currentSpawn.ToString();
     }
+
+    private void OnDestroy()
+    {
+        instance = null;
+    }
 }

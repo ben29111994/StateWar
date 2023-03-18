@@ -4,6 +4,11 @@ using UnityEngine;
 using MoreMountains.NiceVibrations;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using TMPro;
+using UnityEngine.UI;
+using System;
+using Unity.Entities;
+using Unity.Scenes;
 
 public class GameManager : MonoBehaviour
 {
@@ -14,9 +19,15 @@ public class GameManager : MonoBehaviour
     public bool isComplete;
     public bool isVibration;
     public bool isShakeCamera;
-
     public Human[] player;
-
+    public GameObject winPanel;
+    public int playerCounter;
+    public int enemyCounter;
+    public Text playerCountertxt;
+    public Text enemyCountertxt;
+    public Transform spawnPointManager;
+    int totalSpawnPoint = 0;
+    int playerCapture = 0;
 
     private void Awake()
     {
@@ -24,7 +35,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         InitPlugin();
     }
-    
+
     private void Start()
     {
         OnStartGame();
@@ -40,7 +51,7 @@ public class GameManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.W))
         {
             LevelUp();
-            OnStartGame();
+            //OnStartGame();
         }
 
         UpdateStartGame();
@@ -51,10 +62,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && isStart == false)
         {
             isStart = true;
-            UIManager.Instance.Show_InGameUI();
-            TimerController.Instance.StartTimer();
-            FlagController.Instance.StartGenerate();
-            StartAI();
         }
     }
 
@@ -70,9 +77,9 @@ public class GameManager : MonoBehaviour
     public void OnStartGame()
     {
         OnRefresh();
-        GenerateMap.Instance.LoadDataFromResource();
-        UIManager.Instance.Show_MainMenuUI();
-        UIManager.Instance.Loading();
+        //GenerateMap.Instance.LoadDataFromResource();
+        //UIManager.Instance.Show_MainMenuUI();
+        //UIManager.Instance.Loading();
     }
 
     protected virtual void OnRefresh()
@@ -80,28 +87,70 @@ public class GameManager : MonoBehaviour
         isStart = false;
         isComplete = false;
 
-        BXHController.Instance.Refresh();
+        //BXHController.Instance.Refresh();
         PoolManager.Instance.RefreshAll();
-        for (int i = 0; i < player.Length; i++) player[i].Hide();
-        for (int i = 0; i < GetBotAmount(); i++) player[i].Active();
-
-        player[0].GetComponent<Player>().joyStick.gameObject.SetActive(true);
-
-        FlagController.Instance.StopGenerate();
-        TimerController.Instance.ResetTimer();
-    }
-
-    private void StartAI()
-    {
-        for(int i = 1; i < GetBotAmount(); i++)
+        totalSpawnPoint = spawnPointManager.transform.childCount;
+        playerCapture = 0;
+        foreach (Transform child in spawnPointManager.transform)
         {
-            player[i].GetComponent<Bot>().StartAI();
+            if (child.GetComponent<Conquest>().currentTeam.name == "Player's Spawn")
+            {
+                playerCapture++;
+            }
         }
     }
 
-    private void LevelUp()
+    public void Capture(int value)
     {
-        DataManager.Instance.LevelGame++;
+        playerCapture += value;
+        if(playerCapture >= totalSpawnPoint)
+        {
+            Complete();
+        }
+        else if(playerCapture <= 0)
+        {
+            Complete();
+        }
+    }
+
+    //private void StartAI()
+    //{
+    //    for(int i = 1; i < GetBotAmount(); i++)
+    //    {
+    //        player[i].GetComponent<Bot>().StartAI();
+    //    }
+    //}
+
+    public void LevelUp()
+    {
+        CleanAndRestartECS();
+        //DataManager.Instance.LevelGame++;
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void DestroyAllEntities()
+    {
+        World.DefaultGameObjectInjectionWorld.EntityManager.DestroyEntity(World.DefaultGameObjectInjectionWorld.EntityManager.UniversalQuery);
+        World.DisposeAllWorlds();
+        DefaultWorldInitialization.Initialize("Base World", false);
+        ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(World.DefaultGameObjectInjectionWorld);
+    }
+
+    public void CleanAndRestartECS()
+    {
+        var defaultWorld = World.DefaultGameObjectInjectionWorld;
+        defaultWorld.EntityManager.CompleteAllTrackedJobs();
+        foreach (var system in defaultWorld.Systems)
+        {
+            system.Enabled = false;
+        }
+        defaultWorld.Dispose();
+        DefaultWorldInitialization.Initialize("Default World", false);
+        if (!ScriptBehaviourUpdateOrder.IsWorldInCurrentPlayerLoop(World.DefaultGameObjectInjectionWorld))
+        {
+            ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(World.DefaultGameObjectInjectionWorld);
+        }
+        SceneManager.LoadScene("RTS", LoadSceneMode.Single);
     }
 
     public void Complete()
@@ -114,14 +163,52 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator C_Complete()
     {
-        for (int i = 0; i < player.Length; i++) player[i].Complete();
-        LevelUp();
-        UIManager.Instance.OverTIme.SetActive(true);
-        yield return new WaitForSeconds(1.0f);
+        PoolManager.Instance.RefreshAll();
+        yield return new WaitForSeconds(0.5f);
+        //Win
+        winPanel.SetActive(true);
+        float percent = 0;
+        playerCounter = int.Parse(playerCountertxt.ToString());
+        enemyCounter = int.Parse(enemyCountertxt.ToString());
+        if (playerCounter > enemyCounter)
+        {
+            percent = (playerCounter * 100) / (enemyCounter + playerCounter);
+            winPanel.GetComponentInChildren<TextMeshPro>().text = "YOU TAKE OVER " + percent + " OF THE LAND";
+        }
+        else
+        {
+            percent = (enemyCounter * 100) / (enemyCounter + playerCounter);
+            winPanel.GetComponentInChildren<TextMeshPro>().text = "ENEMY TAKE OVER " + percent + " OF THE LAND";
+        }
 
-        UIManager.Instance.OverTIme.SetActive(false);
+        //DestroyAllEntities();
 
-        UIManager.Instance.Show_CompleteUI();
+//        Resources.UnloadUnusedAssets();
+//#if UNITY_IPHONE && !UNITY_EDITOR_OSX && !UNITY_EDITOR
+//            MyNativeBindings.ForceDisableAudioSilentMode();
+//#endif
+//        AssetBundle.UnloadAllAssetBundles(true);
+//        GC.Collect();
+//        try
+//        {
+//            var listObject = gameObject.scene.GetRootGameObjects();
+//            // Debug.Log("Total Object Clear: " + listObject.Length);
+//            for (int i = 0; i < listObject.Length; i++)
+//            {
+//                // Debug.Log("listObject[i].name: " + listObject[i].name);
+//                if (listObject[i] != null)
+//                {
+//                    if (listObject[i].name != "EventSystem")
+//                    {
+//                        Destroy(listObject[i]);
+//                    }
+//                }
+//            }
+//        }
+//        catch /*(UnityEngine.MissingReferenceException e)*/
+//        {
+//            //Debug.Log("error: " + e);
+//        }
     }
 
     public void Fail()
@@ -134,7 +221,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator C_Fail()
     {
-        yield return null;
+        yield return new WaitForSeconds(0.5f);
+        winPanel.SetActive(true);
     }
 
     public void Vibration()

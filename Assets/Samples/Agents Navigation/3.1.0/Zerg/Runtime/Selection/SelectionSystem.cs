@@ -15,6 +15,7 @@ namespace ProjectDawn.Navigation.Sample.Zerg
 
         protected override void OnCreate()
         {
+            Debug.LogWarning("Create");
             m_SelectedEntities = new NativeList<Entity>(Allocator.Persistent);
             m_SelectionRectangle = GameObject.FindObjectOfType<SelectionRectangle>(true);
             m_Gestures = GameObject.FindObjectOfType<Gestures>(true);
@@ -37,6 +38,7 @@ namespace ProjectDawn.Navigation.Sample.Zerg
 
         protected override void OnUpdate()
         {
+            //Debug.LogError( m_SelectionRectangle + " " + m_Gestures);
             if (m_SelectionRectangle == null)
                 return;
 

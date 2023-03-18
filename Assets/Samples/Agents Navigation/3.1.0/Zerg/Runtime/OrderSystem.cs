@@ -11,6 +11,7 @@ using NavMeshPath = ProjectDawn.Navigation.NavMeshPath;
 using Unity.Collections.LowLevel.Unsafe;
 using static UnityEditor.PlayerSettings;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjectDawn.Navigation.Sample.Zerg
 {
@@ -220,14 +221,17 @@ namespace ProjectDawn.Navigation.Sample.Zerg
                 // Set new destination for each agent
                 float3 destination = Ray.GetPoint(distanceToEnvironment);
 
+                List<Vector3> listOffset = new List<Vector3>();
+                //Square formation
                 var _unitWidth = 5;
                 var _unitDepth = 5;
                 bool _hollow = false;
                 var _nthOffset = 0;
                 float Spread = 2;
                 var middleOffset = new Vector3(_unitWidth * 0.5f, 0, _unitDepth * 0.5f);
-                //_unitDepth = (int)((float)Gestures.listSelected.Count / (float)_unitWidth);
-                List<Vector3> listOffset = new List<Vector3>();
+                _unitDepth = (int)((float)SelectedEntities.Length / (float)_unitWidth);
+                if (_unitDepth == 0)
+                    _unitDepth = 1;
                 for (var x = 0; x < _unitWidth; x++)
                 {
                     for (var z = 0; z < _unitDepth; z++)
@@ -244,7 +248,43 @@ namespace ProjectDawn.Navigation.Sample.Zerg
                         listOffset.Add(pos);
                     }
                 }
-                Debug.LogError(listOffset.Count);
+
+                //Circle formation
+                //int _amount = 10;
+                //float _radius = 2f;
+                //float _radiusGrowthMultiplier = 0.05f;
+                //float _rotations = 1;
+                //int _rings = 1;
+                //float _ringOffset = 1;
+                //float _nthOffset = 0;
+                //float Spread = 2f;
+
+                //_rings = SelectedEntities.Length / _amount;
+                //if(_rings == 0) 
+                //    _rings = 1;
+                //var amountPerRing = _amount / _rings;
+                //var ringOffset = 0f;
+                //for (var i = 0; i < _rings; i++)
+                //{
+                //    for (var j = 0; j < amountPerRing; j++)
+                //    {
+                //        var angle = j * Mathf.PI * (2 * _rotations) / amountPerRing + (i % 2 != 0 ? _nthOffset : 0);
+
+                //        var radius = _radius + ringOffset + j * _radiusGrowthMultiplier;
+                //        var x = Mathf.Cos(angle) * radius;
+                //        var z = Mathf.Sin(angle) * radius;
+
+                //        var pos = new Vector3(x, 0, z);
+
+                //        //pos += GetNoise(pos);
+
+                //        pos *= Spread;
+
+                //        listOffset.Add(pos);
+                //    }
+
+                //    ringOffset += _ringOffset;
+                //}
 
                 int count = 0;
                 foreach (var entity in SelectedEntities)
@@ -267,7 +307,8 @@ namespace ProjectDawn.Navigation.Sample.Zerg
 
                     // Either move all agents in formation or not
                     var dis = Vector2.Distance(destination.xz, formationCircle.Center);
-                    Debug.LogError(dis);
+
+                    formation = true;
                     if (formation)
                     {
                         // For this agent get new formation offset from destination
@@ -286,6 +327,8 @@ namespace ProjectDawn.Navigation.Sample.Zerg
                         body.Destination = offsetLocation.position;
                         body.IsStopped = false;
                         BodyLookup[entity] = body;
+                        if (count < listOffset.Count - 1)
+                            count++;
                     }
                     else
                     {
@@ -294,8 +337,6 @@ namespace ProjectDawn.Navigation.Sample.Zerg
                         body.IsStopped = false;
                         BodyLookup[entity] = body;
                     }
-                    if(count < listOffset.Count - 1)
-                        count++;
                 }
 
                 Confirmation.ValueRW = new ConfirmationSystem.Singleton
