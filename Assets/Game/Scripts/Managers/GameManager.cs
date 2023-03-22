@@ -123,9 +123,14 @@ public class GameManager : MonoBehaviour
 
     public void LevelUp()
     {
-        CleanAndRestartECS();
+        //CleanAndRestartECS();
         //DataManager.Instance.LevelGame++;
         //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        //var entityManager = Unity.Entities.World.DefaultGameObjectInjectionWorld.EntityManager;
+        //entityManager.DestroyEntity(entityManager.UniversalQuery);
+        //SceneManager.UnloadSceneAsync(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
     public void DestroyAllEntities()

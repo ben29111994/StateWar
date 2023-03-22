@@ -21,7 +21,7 @@ namespace ProjectDawn.Navigation
     {
         const int InitialCapacity = 2000;
 
-        NativeMultiHashMap<int, int> m_Map;
+        NativeParallelMultiHashMap<int, int> m_Map;
         NativeList<Entity> m_Entities;
         NativeList<AgentBody> m_Bodies;
         NativeList<AgentShape> m_Shapes;
@@ -87,7 +87,7 @@ namespace ProjectDawn.Navigation
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
-            m_Map = new NativeMultiHashMap<int, int>(InitialCapacity, Allocator.Persistent);
+            m_Map = new NativeParallelMultiHashMap<int, int>(InitialCapacity, Allocator.Persistent);
             m_Entities = new NativeList<Entity>(InitialCapacity, Allocator.Persistent);
             m_Bodies = new NativeList<AgentBody>(InitialCapacity, Allocator.Persistent);
             m_Shapes = new NativeList<AgentShape>(InitialCapacity, Allocator.Persistent);
@@ -126,7 +126,7 @@ namespace ProjectDawn.Navigation
 
         public struct Singleton : IComponentData
         {
-            internal NativeMultiHashMap<int, int> m_Map;
+            internal NativeParallelMultiHashMap<int, int> m_Map;
             internal NativeList<Entity> m_Entities;
             internal NativeList<AgentBody> m_Bodies;
             internal NativeList<AgentShape> m_Shapes;
@@ -394,7 +394,7 @@ namespace ProjectDawn.Navigation
     [BurstCompile]
     partial struct HashJob : IJobEntity
     {
-        public NativeMultiHashMap<int, int>.ParallelWriter Map;
+        public NativeParallelMultiHashMap<int, int>.ParallelWriter Map;
         public float3 CellSize;
         void Execute([EntityIndexInQuery] int entityInQueryIndex, in Agent agent, in LocalTransform transform)
         {
@@ -412,7 +412,7 @@ namespace ProjectDawn.Navigation
     [BurstCompile]
     struct ClearJob : IJob
     {
-        public NativeMultiHashMap<int, int> Map;
+        public NativeParallelMultiHashMap<int, int> Map;
         public NativeList<Entity> Entities;
         public NativeList<AgentBody> Bodies;
         public NativeList<AgentShape> Shapes;
@@ -431,7 +431,7 @@ namespace ProjectDawn.Navigation
     [BurstCompile]
     struct ChangeCapacityJob : IJob
     {
-        public NativeMultiHashMap<int, int> Map;
+        public NativeParallelMultiHashMap<int, int> Map;
         public NativeList<Entity> Entities;
         public NativeList<AgentBody> Bodies;
         public NativeList<AgentShape> Shapes;
