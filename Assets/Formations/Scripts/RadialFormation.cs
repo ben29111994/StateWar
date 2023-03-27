@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using ProjectDawn.Navigation.Sample.Zerg;
 
 public class RadialFormation : FormationBase {
     [SerializeField] private int _amount = 10;

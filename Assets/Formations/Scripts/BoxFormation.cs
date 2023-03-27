@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ProjectDawn.Navigation.Sample.Zerg;
 
 public class BoxFormation : FormationBase {
     [SerializeField] private int _unitWidth = 5;

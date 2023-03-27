@@ -3,30 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ProjectDawn.Navigation.Sample.Mass
+[RequireComponent(typeof(Text))]
+public class TextAgentCounter : MonoBehaviour
 {
-    [RequireComponent(typeof(Text))]
-    public class TextAgentCounter : MonoBehaviour
+    Text m_Text;
+
+    Spawner[] m_Spawners;
+
+    void Awake()
     {
-        Text m_Text;
+        m_Spawners = FindObjectsOfType<Spawner>();
+        m_Text = GetComponent<Text>();
+    }
 
-        Spawner[] m_Spawners;
-
-        void Awake()
+    public void Update()
+    {
+        int count = 0;
+        foreach (var spawner in m_Spawners)
         {
-            m_Spawners = FindObjectsOfType<Spawner>();
-            m_Text = GetComponent<Text>();
+            count += spawner.Count;
         }
-
-        public void Update()
-        {
-            int count = 0;
-            foreach (var spawner in m_Spawners)
-            {
-                count += spawner.Count;
-            }
-            if (m_Text)
-                m_Text.text = count.ToString();
-        }
+        if (m_Text)
+            m_Text.text = count.ToString();
     }
 }

@@ -4,8 +4,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using ProjectDawn.Navigation.Hybrid;
 
-namespace ProjectDawn.Navigation.Sample.Scenarios
-{
     [RequireComponent(typeof(AgentAuthoring))]
     [DisallowMultipleComponent]
     public class TankSteeringAuthoring : MonoBehaviour
@@ -54,11 +52,10 @@ namespace ProjectDawn.Navigation.Sample.Scenarios
         }
     }
 
-    internal class TankSteeringBaker : Baker<TankSteeringAuthoring>
+internal class TankSteeringBaker : Baker<TankSteeringAuthoring>
+{
+    public override void Bake(TankSteeringAuthoring authoring)
     {
-        public override void Bake(TankSteeringAuthoring authoring)
-        {
-            AddComponent(authoring.DefaultSteering);
-        }
+        AddComponent(authoring.DefaultSteering);
     }
 }

@@ -3,19 +3,16 @@ using Unity.Mathematics;
 using UnityEngine;
 using ProjectDawn.Navigation;
 
-namespace ProjectDawn.Navigation.Sample.Zerg
+[RequireMatchingQueriesForUpdate]
+public partial class UnitDeathSystem : SystemBase
 {
-    [RequireMatchingQueriesForUpdate]
-    public partial class UnitDeathSystem : SystemBase
+    protected override void OnUpdate()
     {
-        protected override void OnUpdate()
+        Entities.ForEach((Entity entity, Transform transform, in UnitDead unitDead) =>
         {
-            Entities.ForEach((Entity entity, Transform transform, in UnitDead unitDead) =>
-            {
-                //transform.gameObject.SetActive(false);
-                GameObject.Destroy(transform.gameObject);
-                EntityManager.DestroyEntity(entity);
-            }).WithStructuralChanges().WithoutBurst().Run();
-        }
+            //transform.gameObject.SetActive(false);
+            GameObject.Destroy(transform.gameObject);
+            EntityManager.DestroyEntity(entity);
+        }).WithStructuralChanges().WithoutBurst().Run();
     }
 }

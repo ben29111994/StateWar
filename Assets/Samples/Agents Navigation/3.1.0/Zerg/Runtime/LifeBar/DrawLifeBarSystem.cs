@@ -3,30 +3,27 @@ using Unity.Transforms;
 using Unity.Jobs;
 using UnityEngine;
 
-namespace ProjectDawn.Navigation.Sample.Zerg
+[RequireMatchingQueriesForUpdate]
+[UpdateInGroup(typeof(PresentationSystemGroup))]
+public partial class DrawLifeBarSystem : SystemBase
 {
-    [RequireMatchingQueriesForUpdate]
-    [UpdateInGroup(typeof(PresentationSystemGroup))]
-    public partial class DrawLifeBarSystem : SystemBase
+    LifeBar m_LifeBar;
+    protected override void OnCreate()
     {
-        LifeBar m_LifeBar;
-        protected override void OnCreate()
-        {
-            m_LifeBar = GameObject.FindObjectOfType<LifeBar>(true);
-        }
+        m_LifeBar = GameObject.FindObjectOfType<LifeBar>(true);
+    }
 
-        protected override void OnUpdate()
-        {
-            if (m_LifeBar == null)
-                return;
+    protected override void OnUpdate()
+    {
+        if (m_LifeBar == null)
+            return;
 
-            m_LifeBar.UpdateProperties();
+        m_LifeBar.UpdateProperties();
 
-            //Show LifeBar UI
-            //Entities.ForEach((in UnitLife life, in AgentShape shape, in LocalTransform transform) =>
-            //{
-            //    m_LifeBar.Draw(transform.Position, life.Life / life.MaxLife, (int)(shape.Radius / 0.2f), shape.Radius, shape.Height);
-            //}).WithoutBurst().Run();
-        }
+        //Show LifeBar UI
+        //Entities.ForEach((in UnitLife life, in AgentShape shape, in LocalTransform transform) =>
+        //{
+        //    m_LifeBar.Draw(transform.Position, life.Life / life.MaxLife, (int)(shape.Radius / 0.2f), shape.Radius, shape.Height);
+        //}).WithoutBurst().Run();
     }
 }

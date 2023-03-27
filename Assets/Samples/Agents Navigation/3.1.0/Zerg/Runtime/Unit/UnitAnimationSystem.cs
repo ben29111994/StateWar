@@ -3,25 +3,22 @@ using Unity.Mathematics;
 using UnityEngine;
 using ProjectDawn.Navigation;
 
-namespace ProjectDawn.Navigation.Sample.Zerg
+[RequireMatchingQueriesForUpdate]
+public partial class UnitAnimationSystem : SystemBase
 {
-    [RequireMatchingQueriesForUpdate]
-    public partial class UnitAnimationSystem : SystemBase
+    protected override void OnUpdate()
     {
-        protected override void OnUpdate()
+        Entities.ForEach((Animator animator, in UnitBrain brain, in UnitAnimator unit, in AgentBody body) =>
         {
-            Entities.ForEach((Animator animator, in UnitBrain brain, in UnitAnimator unit, in AgentBody body) =>
-            {
-                if (!animator)
-                    return;
+            if (!animator)
+                return;
 
-                animator.SetBool(unit.AttackId, brain.State == UnitBrainState.Attack);
+            animator.SetBool(unit.AttackId, brain.State == UnitBrainState.Attack);
 
-                float speed = math.length(body.Velocity);
+            float speed = math.length(body.Velocity);
 
-                animator.SetFloat(unit.MoveSpeedId, speed);
-                animator.speed = speed > 0.3f ? speed * unit.MoveSpeed : 1f;
-            }).WithoutBurst().Run();
-        }
+            animator.SetFloat(unit.MoveSpeedId, speed);
+            animator.speed = speed > 0.3f ? speed * unit.MoveSpeed : 1f;
+        }).WithoutBurst().Run();
     }
 }

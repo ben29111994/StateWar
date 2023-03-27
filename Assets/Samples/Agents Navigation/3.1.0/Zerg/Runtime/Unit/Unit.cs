@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
 
-namespace ProjectDawn.Navigation.Sample.Zerg
-{
     public enum PlayerId
     {
         Red,
@@ -68,4 +66,3 @@ namespace ProjectDawn.Navigation.Sample.Zerg
     {
         public float Radius;
     }
-}
