@@ -332,13 +332,15 @@ public partial struct UnitBrainSystem : ISystem
             }
 
             // Reduce target life
-            targetLife.Life -= combat.Damage;
+            targetLife.Life = 0;
             if (targetLife.Life <= 0)
             {
                 targetLife.Life = 0;
                 Ecb.AddComponent<UnitDead>(combat.Target);
+                Ecb.AddComponent<UnitDead>(entity);
             }
             LifeLookup[combat.Target] = targetLife;
+            LifeLookup[entity] = targetLife;
 
             // Set attack on cooldown
             combat.CooldownTime = ElapsedTime;

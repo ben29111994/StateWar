@@ -30,15 +30,15 @@ using UnityEngine;
     public struct UnitCombat : IComponentData
     {
         public Entity Target;
-        public float Damage;
+        //public float Damage;
         public float AggressionRadius;
         public float Range;
         public float Speed;
         public float Cooldown;
         public double CooldownTime;
         public double AttackTime;
-        public bool IsReady(double time) => time >= CooldownTime + Cooldown;
-        public bool IsFinished(double time) => time >= AttackTime + Speed;
+        public bool IsReady(double time) => time >= /*CooldownTime + Cooldown*/0;
+        public bool IsFinished(double time) => time >= /*AttackTime + Speed*/0;
     }
 
     public struct UnitFollow : IComponentData

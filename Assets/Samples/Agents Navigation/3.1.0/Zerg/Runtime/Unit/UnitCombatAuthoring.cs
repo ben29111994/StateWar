@@ -5,7 +5,7 @@ using ProjectDawn.Navigation.Hybrid;
 [RequireComponent(typeof(UnitAuthoring))]
 public class UnitCombatAuthoring : MonoBehaviour
 {
-    public float Damage = 10;
+    //public float Damage = 10;
     public float AttackRange = 0.3f;
 
     Entity m_Entity;
@@ -18,9 +18,9 @@ public class UnitCombatAuthoring : MonoBehaviour
         {
             Range = AttackRange,
             AggressionRadius = 3,
-            Cooldown = 0.2f,
+            Cooldown = 0f,
             Speed = 0.5f,
-            Damage = Damage,
+            //Damage = Damage,
         });
         world.EntityManager.AddComponentData(m_Entity, new UnitFollow
         {
