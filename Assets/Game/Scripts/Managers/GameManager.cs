@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
 using System;
-using Unity.Entities;
-using Unity.Scenes;
 
 public class GameManager : MonoBehaviour
 {
@@ -123,39 +121,7 @@ public class GameManager : MonoBehaviour
 
     public void LevelUp()
     {
-        //CleanAndRestartECS();
-        //DataManager.Instance.LevelGame++;
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
-        //var entityManager = Unity.Entities.World.DefaultGameObjectInjectionWorld.EntityManager;
-        //entityManager.DestroyEntity(entityManager.UniversalQuery);
-        //SceneManager.UnloadSceneAsync(0);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
-    }
-
-    public void DestroyAllEntities()
-    {
-        World.DefaultGameObjectInjectionWorld.EntityManager.DestroyEntity(World.DefaultGameObjectInjectionWorld.EntityManager.UniversalQuery);
-        World.DisposeAllWorlds();
-        DefaultWorldInitialization.Initialize("Base World", false);
-        ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(World.DefaultGameObjectInjectionWorld);
-    }
-
-    public void CleanAndRestartECS()
-    {
-        var defaultWorld = World.DefaultGameObjectInjectionWorld;
-        defaultWorld.EntityManager.CompleteAllTrackedJobs();
-        foreach (var system in defaultWorld.Systems)
-        {
-            system.Enabled = false;
-        }
-        defaultWorld.Dispose();
-        DefaultWorldInitialization.Initialize("Default World", false);
-        if (!ScriptBehaviourUpdateOrder.IsWorldInCurrentPlayerLoop(World.DefaultGameObjectInjectionWorld))
-        {
-            ScriptBehaviourUpdateOrder.AppendWorldToCurrentPlayerLoop(World.DefaultGameObjectInjectionWorld);
-        }
-        SceneManager.LoadScene("RTS", LoadSceneMode.Single);
     }
 
     public void Complete()
@@ -185,35 +151,6 @@ public class GameManager : MonoBehaviour
             percent = (enemyCounter * 100) / (enemyCounter + playerCounter);
             winPanel.GetComponentInChildren<TextMeshPro>().text = "ENEMY TAKE OVER " + percent + " OF THE LAND";
         }
-
-        //DestroyAllEntities();
-
-//        Resources.UnloadUnusedAssets();
-//#if UNITY_IPHONE && !UNITY_EDITOR_OSX && !UNITY_EDITOR
-//            MyNativeBindings.ForceDisableAudioSilentMode();
-//#endif
-//        AssetBundle.UnloadAllAssetBundles(true);
-//        GC.Collect();
-//        try
-//        {
-//            var listObject = gameObject.scene.GetRootGameObjects();
-//            // Debug.Log("Total Object Clear: " + listObject.Length);
-//            for (int i = 0; i < listObject.Length; i++)
-//            {
-//                // Debug.Log("listObject[i].name: " + listObject[i].name);
-//                if (listObject[i] != null)
-//                {
-//                    if (listObject[i].name != "EventSystem")
-//                    {
-//                        Destroy(listObject[i]);
-//                    }
-//                }
-//            }
-//        }
-//        catch /*(UnityEngine.MissingReferenceException e)*/
-//        {
-//            //Debug.Log("error: " + e);
-//        }
     }
 
     public void Fail()

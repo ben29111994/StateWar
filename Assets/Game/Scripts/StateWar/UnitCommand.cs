@@ -5,17 +5,17 @@ using UnityEngine;
 public class UnitCommand : MonoBehaviour
 {
     public SpawnPoint spawnPoint;
-    public UnitAuthoring unitCommand;
+    //public UnitAuthoring unitCommand;
 
     private void Awake()
     {
-        unitCommand = GetComponent<UnitAuthoring>();
+        //unitCommand = GetComponent<UnitAuthoring>();
     }
 
     private void OnEnable()
     {
         //Adjust Move Speed
-        unitCommand.MoveAnimationSpeed = 0.05f + spawnPoint.currentSpawn * 0.05f;
+        //unitCommand.MoveAnimationSpeed = 0.05f + spawnPoint.currentSpawn * 0.05f;
     }
 
     [System.Obsolete]
