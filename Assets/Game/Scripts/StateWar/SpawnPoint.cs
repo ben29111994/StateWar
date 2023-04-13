@@ -76,7 +76,7 @@ public class SpawnPoint : MonoBehaviour
             {
                 yield return null;
             }
-            SetFormation();
+            //SetFormation();
             StartCoroutine(Spawn());
         }
     }

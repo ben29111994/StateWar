@@ -17,7 +17,6 @@ public class Conquest : MonoBehaviour
     {
         if (currentTeam.GetComponent<SpawnPoint>().currentSpawn < 5 && !other.CompareTag(currentTeam.tag) && !other.CompareTag("Ground"))
         {
-            Debug.LogError(other.tag + " " + currentTeam.tag);
             switch (other.tag)
             {
                 case "Player":

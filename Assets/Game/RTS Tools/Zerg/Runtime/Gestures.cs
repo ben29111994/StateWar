@@ -19,7 +19,6 @@ public class Gestures : MonoBehaviour
     public int Manager;
     public LineRenderer line;
     public static List<GameObject> listSelected = new List<GameObject>();
-    public GameObject debugCube;
 
     private void Start()
     {
@@ -162,7 +161,6 @@ public class Gestures : MonoBehaviour
             if (hit.transform.gameObject.CompareTag("Ground"))
             {
                 startMove = hit.point;
-                debugCube.transform.position = startMove;
             }
         }
         TouchPosition = Instantiate(OBG, Vector3.zero, Quaternion.identity);
@@ -180,7 +178,6 @@ public class Gestures : MonoBehaviour
             if (hit.transform.gameObject.CompareTag("Ground"))
             {
                 endMove = hit.point;
-                debugCube.transform.position = endMove;
             }
         }
         direction = endMove - startMove;

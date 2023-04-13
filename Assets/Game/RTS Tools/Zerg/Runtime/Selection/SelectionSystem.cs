@@ -8,12 +8,12 @@ public partial class SelectionSystem : MonoBehaviour
     SelectionRectangle m_SelectionRectangle;
     Gestures m_Gestures;
 
-    protected void OnCreate()
+    void OnEnable()
     {
         //Debug.LogWarning("Create");
         //m_SelectedEntities = new NativeList<Entity>(Allocator.Persistent);
-        //m_SelectionRectangle = GameObject.FindObjectOfType<SelectionRectangle>(true);
-        //m_Gestures = GameObject.FindObjectOfType<Gestures>(true);
+        m_SelectionRectangle = GameObject.FindObjectOfType<SelectionRectangle>(true);
+        m_Gestures = GameObject.FindObjectOfType<Gestures>(true);
 
         //World.EntityManager.CreateSingleton(new Singleton
         //{
@@ -31,39 +31,38 @@ public partial class SelectionSystem : MonoBehaviour
         //m_SelectedEntities.Dispose();
     }
 
-    protected void OnUpdate()
+    void Update()
     {
-        ////Debug.LogError( m_SelectionRectangle + " " + m_Gestures);
-        //if (m_SelectionRectangle == null)
-        //    return;
+        if (m_SelectionRectangle == null)
+            return;
 
-        //if (m_Gestures == null)
-        //    return;
+        if (m_Gestures == null)
+            return;
 
         //var selection = SystemAPI.GetSingletonRW<Singleton>();
         //var selectectEntities = selection.ValueRW.SelectedEntities;
 
-        //if (m_Gestures.Swipe(out Rect rect))
-        //{
-        //    m_SelectionRectangle.Show(rect);
-        //    selectectEntities.Clear();
-        //    Entities.ForEach((Entity entity, Transform transformUnit, in Unit unit, in LocalTransform transform) =>
-        //    {
-        //        Vector3 position = Camera.main.WorldToScreenPoint(transform.Position);
-        //        if (rect.Contains(position) && unit.Owner == PlayerId.Red)
-        //        {
-        //            if (!Gestures.listSelected.Contains(transformUnit.gameObject))
-        //            {
-        //                Gestures.listSelected.Add(transformUnit.gameObject);
-        //            }
-        //            selectectEntities.Add(entity);
-        //        }
-        //    }).WithoutBurst().Run();
-        //}
+        if (m_Gestures.Swipe(out Rect rect))
+        {
+            m_SelectionRectangle.Show(rect);
+            //selectectEntities.Clear();
+            //Entities.ForEach((Entity entity, Transform transformUnit, in Unit unit, in LocalTransform transform) =>
+            //{
+            //    Vector3 position = Camera.main.WorldToScreenPoint(transform.Position);
+            //    if (rect.Contains(position) && unit.Owner == PlayerId.Red)
+            //    {
+            //        if (!Gestures.listSelected.Contains(transformUnit.gameObject))
+            //        {
+            //            Gestures.listSelected.Add(transformUnit.gameObject);
+            //        }
+            //        selectectEntities.Add(entity);
+            //    }
+            //}).WithoutBurst().Run();
+        }
 
-        //if (m_Gestures.SelectionExit(out rect))
-        //{
-        //    m_SelectionRectangle.Hide();
-        //}
+        if (m_Gestures.SelectionExit(out rect))
+        {
+            m_SelectionRectangle.Hide();
+        }
     }
 }
