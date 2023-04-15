@@ -423,7 +423,6 @@ GameObject:
   - component: {fileID: 129181194}
   - component: {fileID: 129181193}
   - component: {fileID: 129181199}
-  - component: {fileID: 129181200}
   - component: {fileID: 129181201}
   - component: {fileID: 129181202}
   - component: {fileID: 129181195}
@@ -617,20 +616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e98492130b3dc74e92f784b5debf19f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &129181200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 129181192}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87d4d1db4a882e448b735696199da573, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MoveParticle: {fileID: 6616352425461522140, guid: 52562c1511e5c2248b5505b7420c3292,
-    type: 3}
 --- !u!114 &129181201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -646,6 +631,8 @@ MonoBehaviour:
   m_SelectionBoxPrefab: {fileID: 5979282454386288247, guid: dfc1ba77c05238d4182d502573a2fa34,
     type: 3}
   m_GroupLeaderPrefab: {fileID: 3009904002748542317, guid: b87355286fc29d448accc19ee730d1d1,
+    type: 3}
+  m_MoveParticle: {fileID: 6616352425461522140, guid: 52562c1511e5c2248b5505b7420c3292,
     type: 3}
   line: {fileID: 129181195}
   TouchPosition: {fileID: 5742565228056233641, guid: d7d8341057cc55e4599c3244b3a4f765,
@@ -1631,7 +1618,7 @@ MonoBehaviour:
   async: 1
   downsampleSteps: 3
   registeredPaintableTexture: {fileID: 684674626}
-  cooldown: -973.71985
+  cooldown: -1289.607
   currentReader:
     dirty: 0
     requested: 0
@@ -6488,17 +6475,17 @@ NavMeshAgent:
   m_GameObject: {fileID: 6010206441633808898}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_Speed: 10
-  m_Acceleration: 8
+  m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0.5
-  m_AutoTraverseOffMeshLink: 1
+  m_AngularSpeed: 360
+  m_StoppingDistance: 0.02
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 0.5
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!54 &7215712897198836913
@@ -6735,17 +6722,17 @@ NavMeshAgent:
   m_GameObject: {fileID: 1732811770270597710}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_Speed: 10
-  m_Acceleration: 8
+  m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0.5
-  m_AutoTraverseOffMeshLink: 1
+  m_AngularSpeed: 360
+  m_StoppingDistance: 0.02
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 1
-  m_BaseOffset: 0.5
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!54 &8520334731300077868

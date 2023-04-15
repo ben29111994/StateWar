@@ -9,7 +9,6 @@ public class PlayerSelect : MonoBehaviour
     // Selection
     [SerializeField] private GameObject m_SelectionBoxPrefab = null;
     private SelectionBox m_SelectionBox = null;
-    Gestures m_Gestures;
     private bool m_Selecting = false;
     private bool m_Adding = false;
 
@@ -17,6 +16,9 @@ public class PlayerSelect : MonoBehaviour
     [SerializeField] private GameObject m_GroupLeaderPrefab = null;
     const int m_MinGroupSize = 4;
     const int m_MaxGroupSize = 24;
+
+    // Particle
+    [SerializeField] private GameObject m_MoveParticle = null;
 
 
     // -------------------------
@@ -59,6 +61,14 @@ public class PlayerSelect : MonoBehaviour
             {
                 // Group current selection
                 GroupSelection();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            foreach (GroupLeader leader in m_Data.selectedLeaders)
+            {
+                leader.NextFormation();
             }
         }
     }
@@ -141,6 +151,22 @@ public class PlayerSelect : MonoBehaviour
     private void StopSelecting()
     {
         // Destroy the box and reset reference
+
+        if (m_Data.selectedLeaders.Count == 0 && m_Data.selectedUnits.Count == 0)
+            return;
+
+        // Get mouse location
+        Vector3 mouseLocation = Input.mousePosition;
+        mouseLocation.z = Camera.main.transform.position.y;
+
+        // Convert mouse location to world space
+        Vector3 worldLocation = Camera.main.ScreenToWorldPoint(mouseLocation);
+        MoveSelection(worldLocation);
+
+        // Instantiate particle and destroy it after 1 second
+        GameObject go = Instantiate(m_MoveParticle, worldLocation, Quaternion.identity);
+        Destroy(go, 1f);
+
         Destroy(m_SelectionBox.gameObject);
         m_SelectionBox = null;
         ClearSelection();
@@ -218,7 +244,7 @@ public class PlayerSelect : MonoBehaviour
         if (m_Data.selectedUnits.Count == 0 && m_Data.selectedLeaders.Count == 0)
             return;
 
-        UngroupSelection();
+        //UngroupSelection();
         // Loop over all units
         foreach (UnitBehavior unit in m_Data.selectedUnits)
         {
@@ -249,42 +275,42 @@ public class PlayerSelect : MonoBehaviour
         if (m_Data.selectedUnits.Count == 0 && m_Data.selectedLeaders.Count == 0)
             return;
 
-        // Only execute when we have at least 2 groups
-        if (m_Data.selectedUnits.Count == 0 && m_Data.selectedLeaders.Count < 2)
-        {
-            HUDManager.Instance.SetErrorMessage("Selected units already grouped.");
-            return;
-        }
-        // Or minimum amount of units selected
-        if (m_Data.selectedLeaders.Count == 0 && m_Data.selectedUnits.Count < m_MinGroupSize)
-            return;
+        //// Only execute when we have at least 2 groups
+        //if (m_Data.selectedUnits.Count == 0 && m_Data.selectedLeaders.Count < 2)
+        //{
+        //    HUDManager.Instance.SetErrorMessage("Selected units already grouped.");
+        //    return;
+        //}
+        //// Or minimum amount of units selected
+        //if (m_Data.selectedLeaders.Count == 0 && m_Data.selectedUnits.Count < m_MinGroupSize)
+        //    return;
 
         // Check if we exceed maximum group size
-        int amountUnits = 0;
-        foreach (GroupLeader dataLeader in m_Data.selectedLeaders)
-        {
-            foreach (UnitBehavior dataLeaderUnit in dataLeader.units)
-            {
-                amountUnits++;
-            }
-        }
-        amountUnits += m_Data.selectedUnits.Count;
+        //int amountUnits = 0;
+        //foreach (GroupLeader dataLeader in m_Data.selectedLeaders)
+        //{
+        //    foreach (UnitBehavior dataLeaderUnit in dataLeader.units)
+        //    {
+        //        amountUnits++;
+        //    }
+        //}
+        //amountUnits += m_Data.selectedUnits.Count;
 
-        // Only execute if we are within group size limit
-        if (amountUnits > m_MaxGroupSize)
-        {
-            HUDManager.Instance.SetErrorMessage("Too many units selected.");
-            return;
-        }
+        //// Only execute if we are within group size limit
+        //if (amountUnits > m_MaxGroupSize)
+        //{
+        //    HUDManager.Instance.SetErrorMessage("Too many units selected.");
+        //    return;
+        //}
 
-        bool newLeader = false;
-        if (m_Data.selectedLeaders.Count == 0 || m_Data.selectedLeaders.Count >= 2)
-            newLeader = true;
+        //bool newLeader = false;
+        //if (m_Data.selectedLeaders.Count == 0 || m_Data.selectedLeaders.Count >= 2)
+        bool newLeader = true;
 
         // Set invalid index
         int freeIndex = -1;
 
-        UngroupSelection(newLeader);
+        //UngroupSelection(newLeader);
 
         if (newLeader)
         {
@@ -304,11 +330,11 @@ public class PlayerSelect : MonoBehaviour
         }
 
         // Do not execute if we don't have a free index
-        if (freeIndex == -1)
-        {
-            HUDManager.Instance.SetErrorMessage("Group limit reached.");
-            return;
-        }
+        //if (freeIndex == -1)
+        //{
+        //    HUDManager.Instance.SetErrorMessage("Group limit reached.");
+        //    return;
+        //}
 
         // Set minimum and maximum to opposite values
         Vector3 minimum = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
@@ -405,6 +431,23 @@ public class PlayerSelect : MonoBehaviour
         {
             // Clear the list of leaders
             m_Data.selectedLeaders.Clear();
+        }
+    }
+
+    private void MoveSelection(Vector3 target)
+    {
+        // Loop over all agents
+        foreach (UnitBehavior unit in m_Data.selectedUnits)
+        {
+            // Set a new target
+            unit.SetTarget(target);
+        }
+
+        // Loop over all leaders
+        foreach (GroupLeader leader in m_Data.selectedLeaders)
+        {
+            // Set a new target
+            leader.SetTarget(target);
         }
     }
 }
