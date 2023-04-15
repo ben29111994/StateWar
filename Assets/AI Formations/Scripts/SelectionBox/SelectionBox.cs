@@ -42,21 +42,20 @@ public class SelectionBox : MonoBehaviour
     }
 
     // Set end draw location, and update transform
-    public void SetEndLocation(Vector3 endLocation)
-    {
-        m_EndLocation = endLocation;
-        UpdateTransform();
-    }
+    //public void SetEndLocation(Vector3 endLocation)
+    //{
+    //    m_EndLocation = endLocation;
+    //}
 
     // Update transform to match the draw locations
-    private void UpdateTransform()
-    {
-        // Calculate new size to adjust position
-        Vector3 size = m_EndLocation - m_StartLocation;
-        size.y = 1; // Y scale has to always be at least 1
+    //private void UpdateTransform()
+    //{
+    //    // Calculate new size to adjust position
+    //    Vector3 size = m_EndLocation - m_StartLocation;
+    //    size.y = 1; // Y scale has to always be at least 1
 
-        // Object pivot is center of the plane, have to adjust position relative to it
-        transform.position = new Vector3(m_StartLocation.x + size.x / 2f, 0f, m_StartLocation.z + size.z / 2f);
-        transform.localScale = size; // Set the scale
-    }
+    //    // Object pivot is center of the plane, have to adjust position relative to it
+    //    transform.position = new Vector3(m_StartLocation.x + size.x / 2f, 0f, m_StartLocation.z + size.z / 2f);
+    //    transform.localScale = size; // Set the scale
+    //}
 }

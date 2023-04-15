@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         // Upon right clicking
-        if (Input.GetMouseButtonUp(1))
+        if (Input.GetMouseButtonUp(0))
         {
             if (m_Data.selectedLeaders.Count == 0 && m_Data.selectedUnits.Count == 0)
                 return;

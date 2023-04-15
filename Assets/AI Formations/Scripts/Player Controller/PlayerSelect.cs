@@ -9,6 +9,7 @@ public class PlayerSelect : MonoBehaviour
     // Selection
     [SerializeField] private GameObject m_SelectionBoxPrefab = null;
     private SelectionBox m_SelectionBox = null;
+    Gestures m_Gestures;
     private bool m_Selecting = false;
     private bool m_Adding = false;
 
@@ -34,16 +35,16 @@ public class PlayerSelect : MonoBehaviour
         {
             ClickDragSelect();
         }
-        else
+        if (Input.GetMouseButtonUp(0))
         {
             StopSelecting();
         }
 
         // Upon pressing escape
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ClearSelection();
-        }
+        //if (Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    ClearSelection();
+        //}
 
         // Upon pressing G
         if (Input.GetKeyDown(KeyCode.G))
@@ -68,6 +69,10 @@ public class PlayerSelect : MonoBehaviour
     // -------------------------
 
     // Handle mouse click and drag select
+    Vector3 startPos;
+    Vector3 endPos;
+    public LineRenderer line;
+    public GameObject TouchPosition;
     private void ClickDragSelect()
     {
         // See if we have a selection box present
@@ -88,11 +93,12 @@ public class PlayerSelect : MonoBehaviour
             mouseLocation.z = Camera.main.transform.position.y;
 
             // Convert mouse location to world space
-            Vector3 worldLocation = Camera.main.ScreenToWorldPoint(mouseLocation);
+            startPos = Camera.main.ScreenToWorldPoint(mouseLocation);
 
-            // Set selectionbox boundaries to mouse position
-            m_SelectionBox.SetStartLocation(worldLocation);
-            m_SelectionBox.SetEndLocation(worldLocation);
+            m_SelectionBox.transform.position = new Vector3(startPos.x, 0f, startPos.z);
+
+            // Set selecting to true (holding down left click)
+            m_Selecting = true;
         }
         else
         {
@@ -107,32 +113,41 @@ public class PlayerSelect : MonoBehaviour
             mouseLocation.z = Camera.main.transform.position.y;
 
             // Convert mouse location to world space
-            Vector3 worldLocation = Camera.main.ScreenToWorldPoint(mouseLocation);
+            endPos = Camera.main.ScreenToWorldPoint(mouseLocation);
 
-            // Update end location, which will update selectionbox boundaries
-            m_SelectionBox.SetEndLocation(worldLocation);
+            //TouchPosition.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, +10));
+            line.enabled = true;
+            line.SetPosition(0, startPos);
+            line.SetPosition(1, endPos);
+            TouchPosition.transform.position = endPos;
+
+            // Only execute when selecting
+            if (!m_Selecting)
+                return;
+
+            // If not adding to our current selection, clear it
+            //if (!m_Adding)
+            //{
+            //    ClearSelection();
+            //}
+
+            // Select units, and stop selecting
+            SelectUnits();
+            m_Selecting = false;
+            //m_Adding = false;
         }
-
-        // Set selecting to true (holding down left click)
-        m_Selecting = true;
     }
 
     private void StopSelecting()
     {
-        // Only execute when selecting
-        if (!m_Selecting)
-            return;
+        // Destroy the box and reset reference
+        Destroy(m_SelectionBox.gameObject);
+        m_SelectionBox = null;
+        ClearSelection();
 
-        // If not adding to our current selection, clear it
-        if (!m_Adding)
-        {
-            ClearSelection();
-        }
-
-        // Select units, and stop selecting
-        SelectUnits();
-        m_Selecting = false;
-        m_Adding = false;
+        line.enabled = false;
+        line.SetPosition(0, Vector3.zero);
+        line.SetPosition(1, Vector3.zero);
     }
 
 
@@ -193,9 +208,7 @@ public class PlayerSelect : MonoBehaviour
             }
         }
 
-        // Destroy the box and reset reference
-        Destroy(m_SelectionBox.gameObject);
-        m_SelectionBox = null;
+        GroupSelection();
     }
 
     // Clear our selected units
@@ -205,6 +218,7 @@ public class PlayerSelect : MonoBehaviour
         if (m_Data.selectedUnits.Count == 0 && m_Data.selectedLeaders.Count == 0)
             return;
 
+        UngroupSelection();
         // Loop over all units
         foreach (UnitBehavior unit in m_Data.selectedUnits)
         {
