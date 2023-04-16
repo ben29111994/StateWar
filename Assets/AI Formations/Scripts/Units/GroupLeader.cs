@@ -205,16 +205,16 @@ public class GroupLeader : MonoBehaviour
         // Apply speed to group, set all units to match this speed increased with amplifier
         m_MaxSpeed = slowestSpeed;
         var increasedSpeed = 1;
-        int count = 0;
+        //int count = 0;
         for (int i = 0; i < units.Count; i++)
         {
-            count++;
-            if(count >= 5)
-            {
-                increasedSpeed += 1;
-                count = 0;
-            }
-            units[i].SetMinimumSpeed(slowestSpeed * m_SpeedAmplifier + increasedSpeed);
+            //count++;
+            //if(count >= 5)
+            //{
+            //    increasedSpeed += 1;
+            //    count = 0;
+            //}
+            units[i].SetMinimumSpeed(slowestSpeed * m_SpeedAmplifier);
         }
 
         // Set angular speed

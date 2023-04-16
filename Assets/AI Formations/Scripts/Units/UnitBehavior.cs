@@ -111,15 +111,15 @@ public class UnitBehavior : MonoBehaviour
     }
 
     // Change mesh material
-    public void SetMaterial(Material material = null)
-    {
-        if (material == null)
-        {
-            m_Mesh.material = m_StandardMaterial;
-        }
-        else
-        {
-            m_Mesh.material = material;
-        }
-    }
+    //public void SetMaterial(Material material = null)
+    //{
+    //    if (material == null)
+    //    {
+    //        m_Mesh.material = m_StandardMaterial;
+    //    }
+    //    else
+    //    {
+    //        m_Mesh.material = material;
+    //    }
+    //}
 }

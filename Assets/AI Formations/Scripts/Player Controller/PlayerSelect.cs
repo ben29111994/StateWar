@@ -30,7 +30,7 @@ public class PlayerSelect : MonoBehaviour
         m_Data = GetComponent<PlayerData>();
     }
 
-    private void Update()
+    void FixedUpdate()
     {
         // Get left mouse button input
         if (Input.GetMouseButton(0))
@@ -52,16 +52,16 @@ public class PlayerSelect : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G))
         {
             // Check if we are holding down any of the shift keys
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
-            {
-                // Ungroup current selection
-                UngroupSelection();
-            }
-            else
-            {
-                // Group current selection
-                GroupSelection();
-            }
+            //if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            //{
+            //    // Ungroup current selection
+            //    UngroupSelection();
+            //}
+            //else
+            //{
+            //    // Group current selection
+            //    GroupSelection();
+            //}
         }
 
         if (Input.GetKeyDown(KeyCode.T))
@@ -88,11 +88,14 @@ public class PlayerSelect : MonoBehaviour
         // See if we have a selection box present
         if (m_SelectionBox == null)
         {
+            Debug.LogError("ClickDragSelect");
             // Check if we are adding to our current selection
-            if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
-            {
-                m_Adding = true;
-            }
+            //if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
+            //{
+            //    m_Adding = true;
+            //}
+            UngroupSelection();
+            ClearSelection();
 
             // If no selectionbox exists, create one
             GameObject go = Instantiate(m_SelectionBoxPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
@@ -103,9 +106,10 @@ public class PlayerSelect : MonoBehaviour
             mouseLocation.z = Camera.main.transform.position.y;
 
             // Convert mouse location to world space
-            startPos = Camera.main.ScreenToWorldPoint(mouseLocation);
+            var worldPos = Camera.main.ScreenToWorldPoint(mouseLocation);
+            startPos = new Vector3(worldPos.x, 0f, worldPos.z);
 
-            m_SelectionBox.transform.position = new Vector3(startPos.x, 0f, startPos.z);
+            m_SelectionBox.transform.position = startPos;
 
             // Set selecting to true (holding down left click)
             m_Selecting = true;
@@ -113,17 +117,18 @@ public class PlayerSelect : MonoBehaviour
         else
         {
             // Check if player hasn't released control
-            if (!Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl))
-            {
-                m_Adding = false;
-            }
+            //if (!Input.GetKey(KeyCode.LeftControl) && !Input.GetKey(KeyCode.RightControl))
+            //{
+            //    m_Adding = false;
+            //}
 
             // Get mouse location
             Vector3 mouseLocation = Input.mousePosition;
             mouseLocation.z = Camera.main.transform.position.y;
 
             // Convert mouse location to world space
-            endPos = Camera.main.ScreenToWorldPoint(mouseLocation);
+            var worldPos = Camera.main.ScreenToWorldPoint(mouseLocation);
+            endPos = new Vector3(worldPos.x, 0f, worldPos.z);
 
             //TouchPosition.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, +10));
             line.enabled = true;
@@ -150,26 +155,26 @@ public class PlayerSelect : MonoBehaviour
 
     private void StopSelecting()
     {
+        Debug.LogError("StopSelecting");
         // Destroy the box and reset reference
 
-        if (m_Data.selectedLeaders.Count == 0 && m_Data.selectedUnits.Count == 0)
-            return;
+        //if (m_Data.selectedLeaders.Count == 0 && m_Data.selectedUnits.Count == 0)
+        //    return;
 
         // Get mouse location
         Vector3 mouseLocation = Input.mousePosition;
         mouseLocation.z = Camera.main.transform.position.y;
 
         // Convert mouse location to world space
-        Vector3 worldLocation = Camera.main.ScreenToWorldPoint(mouseLocation);
-        MoveSelection(worldLocation);
+        //Vector3 worldLocation = Camera.main.ScreenToWorldPoint(mouseLocation);
+        MoveSelection(endPos);
 
         // Instantiate particle and destroy it after 1 second
-        GameObject go = Instantiate(m_MoveParticle, worldLocation, Quaternion.identity);
+        GameObject go = Instantiate(m_MoveParticle, endPos, Quaternion.identity);
         Destroy(go, 1f);
 
         Destroy(m_SelectionBox.gameObject);
         m_SelectionBox = null;
-        ClearSelection();
 
         line.enabled = false;
         line.SetPosition(0, Vector3.zero);
@@ -184,6 +189,7 @@ public class PlayerSelect : MonoBehaviour
     // Select units inside selection box
     private void SelectUnits()
     {
+        Debug.LogError("SelectUnits");
         // Only execute if we have a box reference
         if (m_SelectionBox == null)
             return;
@@ -200,12 +206,12 @@ public class PlayerSelect : MonoBehaviour
                 continue;
 
             // If we are adding to our selection
-            if (m_Adding)
-            {
+            //if (m_Adding)
+            //{
                 // If duplicate, don't add this unit
                 if (m_Data.selectedUnits.Contains(unit))
                     continue;
-            }
+            //}
 
             // Get the unit's leader
             GroupLeader leader = unit.GetLeader();
@@ -240,9 +246,10 @@ public class PlayerSelect : MonoBehaviour
     // Clear our selected units
     private void ClearSelection()
     {
+        Debug.LogError("ClearSelection");
         // Only execute if we have units
-        if (m_Data.selectedUnits.Count == 0 && m_Data.selectedLeaders.Count == 0)
-            return;
+        //if (m_Data.selectedUnits.Count == 0 && m_Data.selectedLeaders.Count == 0)
+        //    return;
 
         //UngroupSelection();
         // Loop over all units
@@ -303,14 +310,14 @@ public class PlayerSelect : MonoBehaviour
         //    return;
         //}
 
-        //bool newLeader = false;
-        //if (m_Data.selectedLeaders.Count == 0 || m_Data.selectedLeaders.Count >= 2)
-        bool newLeader = true;
+        bool newLeader = false;
+        if (m_Data.selectedLeaders.Count == 0 || m_Data.selectedLeaders.Count >= 2)
+            newLeader = true;
 
         // Set invalid index
         int freeIndex = -1;
 
-        //UngroupSelection(newLeader);
+        UngroupSelection(newLeader);
 
         if (newLeader)
         {
@@ -330,11 +337,11 @@ public class PlayerSelect : MonoBehaviour
         }
 
         // Do not execute if we don't have a free index
-        //if (freeIndex == -1)
-        //{
-        //    HUDManager.Instance.SetErrorMessage("Group limit reached.");
-        //    return;
-        //}
+        if (freeIndex == -1)
+        {
+            HUDManager.Instance.SetErrorMessage("Group limit reached.");
+            return;
+        }
 
         // Set minimum and maximum to opposite values
         Vector3 minimum = new Vector3(Mathf.Infinity, Mathf.Infinity, Mathf.Infinity);
@@ -387,7 +394,7 @@ public class PlayerSelect : MonoBehaviour
             // Add to leader list of units, set unit leader and material to group color
             leader.units.Add(unit);
             unit.SetLeader(leader);
-            unit.SetMaterial(m_Data.groupMaterials[freeIndex]);
+            //unit.SetMaterial(m_Data.groupMaterials[freeIndex]);
         }
 
         // Clear list of selected units and create formation
@@ -416,7 +423,7 @@ public class PlayerSelect : MonoBehaviour
             {
                 // Add them to our current selected units, and reset material
                 m_Data.selectedUnits.Add(unit);
-                unit.SetMaterial();
+                //unit.SetMaterial();
             }
 
             if (destroyLeader)
@@ -436,6 +443,7 @@ public class PlayerSelect : MonoBehaviour
 
     private void MoveSelection(Vector3 target)
     {
+        Debug.LogError("MoveSelection");
         // Loop over all agents
         foreach (UnitBehavior unit in m_Data.selectedUnits)
         {
