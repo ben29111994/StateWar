@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using PaintIn3D;
+using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.UI.CanvasScaler;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(NavMeshAgent))]
@@ -17,12 +19,11 @@ public class UnitBehavior : MonoBehaviour
     private Rigidbody m_Rigidbody = null;
 
     // NavMeshAgent
-    private NavMeshAgent m_NavMeshAgent = null;
+    public NavMeshAgent m_NavMeshAgent = null;
     private float m_NormalSpeed = 0;
 
     // Group
-    private GroupLeader m_Leader = null;
-
+    public GroupLeader m_Leader = null;
 
     // -------------------------
     // START & UPDATE
@@ -64,6 +65,7 @@ public class UnitBehavior : MonoBehaviour
     {
         // Hide the selection circle
         m_SelectionCircle.SetActive(false);
+        GetComponent<P3dPaintSphere>().Radius = 1;
     }
 
 
@@ -108,6 +110,20 @@ public class UnitBehavior : MonoBehaviour
         }
 
         m_Leader = leader;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(tag == other.tag)
+        {
+            if (m_NavMeshAgent.velocity != Vector3.zero && other.GetComponent<UnitBehavior>().m_NavMeshAgent.velocity == Vector3.zero && other.GetComponent<UnitBehavior>().m_Leader != m_Leader)
+            {
+                //other.GetComponent<UnitBehavior>().SetTarget(m_Leader.m_Target);
+                //other.GetComponent<UnitBehavior>().m_NormalSpeed = m_NormalSpeed;
+                //m_Leader.units.Add(other.GetComponent<UnitBehavior>());
+                //other.GetComponent<UnitBehavior>().SetLeader(m_Leader);
+            }
+        }
     }
 
     // Change mesh material

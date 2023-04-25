@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using PaintIn3D;
 
 public class PlayerSelect : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class PlayerSelect : MonoBehaviour
     // Grouping
     [SerializeField] private GameObject m_GroupLeaderPrefab = null;
     const int m_MinGroupSize = 4;
-    const int m_MaxGroupSize = 24;
+    const int m_MaxGroupSize = 20;
 
     // Particle
     [SerializeField] private GameObject m_MoveParticle = null;
@@ -197,9 +198,12 @@ public class PlayerSelect : MonoBehaviour
         // Get all overlapping objects
         List<GameObject> overlappingObjects = m_SelectionBox.GetOverlappingObjects();
 
+        int Count = 0;
         // Loop over all objects
         foreach (GameObject go in overlappingObjects)
         {
+            Count++;
+            if(Count > m_MaxGroupSize) break;
             // Check if gameobject they have behavior script
             UnitBehavior unit = go.GetComponent<UnitBehavior>();
             if (unit == null)
@@ -387,6 +391,8 @@ public class PlayerSelect : MonoBehaviour
             leader.SetLocation(middle);
             leader.units.Clear();
         }
+        float paintSize = 1;
+        paintSize += m_Data.selectedUnits.Count * 0.1f;
 
         // Loop over all units
         foreach (UnitBehavior unit in m_Data.selectedUnits)
@@ -394,6 +400,7 @@ public class PlayerSelect : MonoBehaviour
             // Add to leader list of units, set unit leader and material to group color
             leader.units.Add(unit);
             unit.SetLeader(leader);
+            unit.GetComponent<P3dPaintSphere>().Radius = paintSize;
             //unit.SetMaterial(m_Data.groupMaterials[freeIndex]);
         }
 

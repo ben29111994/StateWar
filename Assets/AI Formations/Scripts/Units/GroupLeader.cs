@@ -14,7 +14,8 @@ public class GroupLeader : MonoBehaviour
     // Formations
     [Header("Formation")]
     [SerializeField] private GameObject m_FormationPointPrefab = null;
-    private List<Transform> m_FormationTransforms = new List<Transform>();
+    public List<Transform> m_FormationTransforms = new List<Transform>();
+    public List<Transform> m_FormationTransformsAdjust = new List<Transform>();
     private FormationType m_CurrentFormation;
     private bool m_Wheeling;
 
@@ -33,7 +34,7 @@ public class GroupLeader : MonoBehaviour
     [SerializeField] private float m_MinAngularSpeed = 15f;
     private Rigidbody m_Rigidbody;
     private NavMeshPath m_Path;
-    private Vector3 m_Target;
+    public Vector3 m_Target;
     private Vector3 m_TargetDirection;
     private float m_MaxSpeed = 0f;
     private float m_Speed = 0f;
@@ -58,11 +59,12 @@ public class GroupLeader : MonoBehaviour
         m_Rigidbody = GetComponent<Rigidbody>();
     }
 
+    float targetDistance;
     // Update group path and move units
     private void FixedUpdate()
     {
         // If we are further away than stop distance
-        float targetDistance = Vector3.Distance(transform.position, m_Target);
+        targetDistance = Vector3.Distance(transform.position, m_Target);
         if (targetDistance > m_StopDistance)
         {
             // Recalculate path
@@ -130,7 +132,21 @@ public class GroupLeader : MonoBehaviour
     {
         for (int index = 0; index < units.Count; index++)
         {
-            units[index].SetTarget(m_FormationTransforms[index].position);
+            Transform targetAdjust = m_FormationTransformsAdjust[index];
+            var absValue = Mathf.Abs(m_FormationTransforms[index].localPosition.x)/50;
+            if (targetDistance > 10)
+            {
+                if (m_FormationTransforms[index].localPosition.x < 0)
+                    targetAdjust.localPosition = new Vector3(m_FormationTransformsAdjust[index].localPosition.x - absValue, m_FormationTransformsAdjust[index].localPosition.y, m_FormationTransformsAdjust[index].localPosition.z);
+                else if (m_FormationTransforms[index].localPosition.x > 0)
+                    targetAdjust.localPosition = new Vector3(m_FormationTransformsAdjust[index].localPosition.x + absValue, m_FormationTransformsAdjust[index].localPosition.y, m_FormationTransformsAdjust[index].localPosition.z);
+            }
+            else
+            {
+                targetAdjust.localPosition = Vector3.MoveTowards(targetAdjust.localPosition, m_FormationTransforms[index].localPosition, 5 * Time.deltaTime);
+            }
+            units[index].SetTarget(targetAdjust.position);
+            m_FormationTransformsAdjust[index].localPosition = targetAdjust.localPosition;
         }
     }
 
@@ -184,6 +200,8 @@ public class GroupLeader : MonoBehaviour
             {
                 Destroy(m_FormationTransforms[index].gameObject);
                 m_FormationTransforms.RemoveAt(index);
+                Destroy(m_FormationTransformsAdjust[index].gameObject);
+                m_FormationTransformsAdjust.RemoveAt(index);
             }
         }
     }
@@ -278,6 +296,7 @@ public class GroupLeader : MonoBehaviour
             if (m_FormationTransforms.Count > index)
             {
                 m_FormationTransforms[index].localPosition = currentPosition;
+                m_FormationTransformsAdjust[index].localPosition = currentPosition;
             }
             else
             {
@@ -285,6 +304,8 @@ public class GroupLeader : MonoBehaviour
                 GameObject go = Instantiate(m_FormationPointPrefab, transform);
                 go.transform.localPosition = currentPosition;
                 m_FormationTransforms.Add(go.transform);
+                GameObject goAdjust = Instantiate(go, transform);
+                m_FormationTransformsAdjust.Add(goAdjust.transform);
             }
 
             if (((index + 1) % unitsPerRow) == 0)
@@ -322,6 +343,7 @@ public class GroupLeader : MonoBehaviour
             if (m_FormationTransforms.Count > index)
             {
                 m_FormationTransforms[index].localPosition = position;
+                m_FormationTransformsAdjust[index].localPosition = position;
             }
             else
             {
@@ -329,7 +351,20 @@ public class GroupLeader : MonoBehaviour
                 GameObject go = Instantiate(m_FormationPointPrefab, transform);
                 go.transform.localPosition = position;
                 m_FormationTransforms.Add(go.transform);
+                GameObject goAdjust = Instantiate(go, transform);
+                m_FormationTransformsAdjust.Add(goAdjust.transform);
             }
         }
     }
+
+    Vector3 sharedTarget;
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    if (tag == other.tag)
+    //    {
+    //        Debug.LogError("Trigger!");
+    //        if (sharedTarget != Vector3.zero && other.GetComponent<UnitBehavior>().m_NavMeshAgent.isStopped)
+    //            other.GetComponent<UnitBehavior>().SetTarget(sharedTarget);
+    //    }
+    //}
 }
