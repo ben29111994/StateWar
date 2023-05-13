@@ -49,10 +49,10 @@ public class SpawnPoint : MonoBehaviour
         //switch (typePrefab)
         //{
         //    case "Player":
-        //        newInstance = PoolManager.Instance.GetObject(PoolManager.NameObject.Player) as GameObject;
+        //        newUnit = PoolManager.Instance.GetObject(PoolManager.NameObject.Player) as GameObject;
         //        break;
         //    case "Enemy":
-        //        newInstance = PoolManager.Instance.GetObject(PoolManager.NameObject.Enemy) as GameObject;
+        //        newUnit = PoolManager.Instance.GetObject(PoolManager.NameObject.Enemy) as GameObject;
         //        break;
         //    default:
         //        break;

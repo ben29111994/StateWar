@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using PaintIn3D;
+using static UnityEngine.Networking.UnityWebRequest;
+using UnityEngine.AI;
 
 public class PlayerSelect : MonoBehaviour
 {
@@ -84,18 +86,19 @@ public class PlayerSelect : MonoBehaviour
     Vector3 endPos;
     public LineRenderer line;
     public GameObject TouchPosition;
+    public float distance;
     private void ClickDragSelect()
     {
         // See if we have a selection box present
         if (m_SelectionBox == null)
         {
-            Debug.LogError("ClickDragSelect");
+            //Debug.LogError("ClickDragSelect");
             // Check if we are adding to our current selection
             //if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl))
             //{
             //    m_Adding = true;
             //}
-            UngroupSelection();
+            //UngroupSelection();
             ClearSelection();
 
             // If no selectionbox exists, create one
@@ -131,6 +134,14 @@ public class PlayerSelect : MonoBehaviour
             var worldPos = Camera.main.ScreenToWorldPoint(mouseLocation);
             endPos = new Vector3(worldPos.x, 0f, worldPos.z);
 
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(endPos, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                endPos = hit.position;
+            }
+            else
+                return;
+
             //TouchPosition.transform.position = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, +10));
             line.enabled = true;
             line.SetPosition(0, startPos);
@@ -156,30 +167,34 @@ public class PlayerSelect : MonoBehaviour
 
     private void StopSelecting()
     {
-        Debug.LogError("StopSelecting");
-        // Destroy the box and reset reference
+        try
+        {
+            //Debug.LogError("StopSelecting");
+            // Destroy the box and reset reference
 
-        //if (m_Data.selectedLeaders.Count == 0 && m_Data.selectedUnits.Count == 0)
-        //    return;
+            //if (m_Data.selectedLeaders.Count == 0 && m_Data.selectedUnits.Count == 0)
+            //    return;
 
-        // Get mouse location
-        Vector3 mouseLocation = Input.mousePosition;
-        mouseLocation.z = Camera.main.transform.position.y;
+            // Get mouse location
+            Vector3 mouseLocation = Input.mousePosition;
+            mouseLocation.z = Camera.main.transform.position.y;
 
-        // Convert mouse location to world space
-        //Vector3 worldLocation = Camera.main.ScreenToWorldPoint(mouseLocation);
-        MoveSelection(endPos);
+            // Convert mouse location to world space
+            //Vector3 worldLocation = Camera.main.ScreenToWorldPoint(mouseLocation);
+            MoveSelection(endPos);
 
-        // Instantiate particle and destroy it after 1 second
-        GameObject go = Instantiate(m_MoveParticle, endPos, Quaternion.identity);
-        Destroy(go, 1f);
+            // Instantiate particle and destroy it after 1 second
+            GameObject go = Instantiate(m_MoveParticle, endPos, Quaternion.identity);
+            Destroy(go, 1f);
 
-        Destroy(m_SelectionBox.gameObject);
-        m_SelectionBox = null;
+            Destroy(m_SelectionBox.gameObject);
+            m_SelectionBox = null;
 
-        line.enabled = false;
-        line.SetPosition(0, Vector3.zero);
-        line.SetPosition(1, Vector3.zero);
+            line.enabled = false;
+            line.SetPosition(0, Vector3.zero);
+            line.SetPosition(1, Vector3.zero);
+        }
+        catch { }
     }
 
 
@@ -190,7 +205,7 @@ public class PlayerSelect : MonoBehaviour
     // Select units inside selection box
     private void SelectUnits()
     {
-        Debug.LogError("SelectUnits");
+        //Debug.LogError("SelectUnits");
         // Only execute if we have a box reference
         if (m_SelectionBox == null)
             return;
@@ -250,7 +265,7 @@ public class PlayerSelect : MonoBehaviour
     // Clear our selected units
     private void ClearSelection()
     {
-        Debug.LogError("ClearSelection");
+        //Debug.LogError("ClearSelection");
         // Only execute if we have units
         //if (m_Data.selectedUnits.Count == 0 && m_Data.selectedLeaders.Count == 0)
         //    return;
@@ -450,7 +465,7 @@ public class PlayerSelect : MonoBehaviour
 
     private void MoveSelection(Vector3 target)
     {
-        Debug.LogError("MoveSelection");
+        //Debug.LogError("MoveSelection");
         // Loop over all agents
         foreach (UnitBehavior unit in m_Data.selectedUnits)
         {
@@ -463,6 +478,8 @@ public class PlayerSelect : MonoBehaviour
         {
             // Set a new target
             leader.SetTarget(target);
+            distance = Vector3.Distance(startPos, endPos);
+            leader.distance = distance;
         }
     }
 }

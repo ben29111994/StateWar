@@ -63,9 +63,13 @@ public class UnitBehavior : MonoBehaviour
     // Code to execute when deselecting unit
     public void Deselect()
     {
-        // Hide the selection circle
-        m_SelectionCircle.SetActive(false);
-        GetComponent<P3dPaintSphere>().Radius = 1;
+        try
+        {
+            // Hide the selection circle
+            m_SelectionCircle.SetActive(false);
+            GetComponent<P3dPaintSphere>().Radius = 1;
+        }
+        catch { }
     }
 
 
@@ -76,7 +80,13 @@ public class UnitBehavior : MonoBehaviour
     // Set a new target
     public void SetTarget(Vector3 target)
     {
-        m_NavMeshAgent.SetDestination(target);
+        //m_NavMeshAgent.speed = adjustSpeed;
+        try
+        {
+            if (m_NavMeshAgent != null)
+                m_NavMeshAgent.SetDestination(target);
+        }
+        catch { }
     }
 
     // Get the units speed

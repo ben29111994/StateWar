@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.AI;
 
 [DisallowMultipleComponent]
 public class AgentDestinationAuthoring : MonoBehaviour
@@ -8,6 +9,7 @@ public class AgentDestinationAuthoring : MonoBehaviour
     public List<Transform> listTarget = new List<Transform>();
     public float Radius;
     public float orderInterval;
+    public NavMeshAgent m_NavMeshAgent = null;
     WaitForSeconds intervalCache;
 
     private void OnEnable()
@@ -19,6 +21,8 @@ public class AgentDestinationAuthoring : MonoBehaviour
     IEnumerator delayCommand()
     {
         yield return intervalCache;
+        var pickTarget = listTarget[Random.Range(0, listTarget.Count)];
+        m_NavMeshAgent.SetDestination(pickTarget.position);
         //var agent = transform.GetComponent<AgentAuthoring>();
         //var body = agent.EntityBody;
         //if (listTarget.Count > 0)

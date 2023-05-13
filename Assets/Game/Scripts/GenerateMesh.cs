@@ -3,22 +3,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
+using UnityEngine.AI;
 
 public class GenerateMesh : MonoBehaviour
 {
     public MeshRenderer meshRenderer;
     public Sprite sprite;
 
-    // Start is called before the first frame update
-    void Start()
+    [Button]
+    public void CreateMeshFromSprite()
     {
         meshRenderer.GetComponent<MeshFilter>().sharedMesh = SpriteToMesh(sprite);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     Mesh SpriteToMesh(Sprite sprite)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -60,8 +61,9 @@ public class GroupLeader : MonoBehaviour
     }
 
     float targetDistance;
+    public float distance;
     // Update group path and move units
-    private void FixedUpdate()
+    private void Update()
     {
         // If we are further away than stop distance
         targetDistance = Vector3.Distance(transform.position, m_Target);
@@ -133,20 +135,42 @@ public class GroupLeader : MonoBehaviour
         for (int index = 0; index < units.Count; index++)
         {
             Transform targetAdjust = m_FormationTransformsAdjust[index];
-            var absValue = Mathf.Abs(m_FormationTransforms[index].localPosition.x)/50;
-            if (targetDistance > 10)
+            var absValue = Mathf.Abs(m_FormationTransforms[index].localPosition.x) / 50;
+            var absValueZ = Mathf.Abs(m_FormationTransforms[index].localPosition.z) / 25;
+            var unitTargetDistance = Vector3.Distance(m_FormationTransformsAdjust[index].position, m_Target);
+
+            if (targetDistance > distance/2 && unitTargetDistance > distance/2)
             {
                 if (m_FormationTransforms[index].localPosition.x < 0)
                     targetAdjust.localPosition = new Vector3(m_FormationTransformsAdjust[index].localPosition.x - absValue, m_FormationTransformsAdjust[index].localPosition.y, m_FormationTransformsAdjust[index].localPosition.z);
                 else if (m_FormationTransforms[index].localPosition.x > 0)
                     targetAdjust.localPosition = new Vector3(m_FormationTransformsAdjust[index].localPosition.x + absValue, m_FormationTransformsAdjust[index].localPosition.y, m_FormationTransformsAdjust[index].localPosition.z);
+
+                if (m_FormationTransforms[index].localPosition.z < 0)
+                    targetAdjust.localPosition = new Vector3(m_FormationTransformsAdjust[index].localPosition.x, m_FormationTransformsAdjust[index].localPosition.y, m_FormationTransformsAdjust[index].localPosition.z - absValueZ);
+                else if (m_FormationTransforms[index].localPosition.z > 0)
+                    targetAdjust.localPosition = new Vector3(m_FormationTransformsAdjust[index].localPosition.x, m_FormationTransformsAdjust[index].localPosition.y, m_FormationTransformsAdjust[index].localPosition.z + absValueZ);
             }
-            else
+            else if(targetDistance > m_StopDistance && unitTargetDistance > m_StopDistance)
             {
-                targetAdjust.localPosition = Vector3.MoveTowards(targetAdjust.localPosition, m_FormationTransforms[index].localPosition, 5 * Time.deltaTime);
+                var t = targetDistance / m_Speed;
+                //targetAdjust.localPosition = Vector3.MoveTowards(targetAdjust.localPosition, m_FormationTransforms[index].localPosition, t * Time.deltaTime);
+                targetAdjust.DOLocalMove(m_FormationTransforms[index].localPosition, t).SetEase(Ease.Linear);
             }
-            units[index].SetTarget(targetAdjust.position);
+            //if(m_FormationTransformsAdjust[index].localPosition.z < 0)
+            //    units[index].SetTarget(targetAdjust.position, 20);
+            //else
+            //    units[index].SetTarget(targetAdjust.position, 5);
+            if (units[index] != null)
+                units[index].SetTarget(targetAdjust.position);
+            else
+                units.RemoveAt(index);
             m_FormationTransformsAdjust[index].localPosition = targetAdjust.localPosition;
+        }
+        units.TrimExcess();
+        if(units.Count == 0)
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -222,16 +246,8 @@ public class GroupLeader : MonoBehaviour
 
         // Apply speed to group, set all units to match this speed increased with amplifier
         m_MaxSpeed = slowestSpeed;
-        var increasedSpeed = 1;
-        //int count = 0;
         for (int i = 0; i < units.Count; i++)
         {
-            //count++;
-            //if(count >= 5)
-            //{
-            //    increasedSpeed += 1;
-            //    count = 0;
-            //}
             units[i].SetMinimumSpeed(slowestSpeed * m_SpeedAmplifier);
         }
 
