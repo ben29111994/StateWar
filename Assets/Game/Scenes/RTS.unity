@@ -461,6 +461,7 @@ MonoBehaviour:
   line: {fileID: 129181195}
   TouchPosition: {fileID: 5742565228056233641, guid: d7d8341057cc55e4599c3244b3a4f765,
     type: 3}
+  distance: 0
 --- !u!114 &129181202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1691,7 +1692,7 @@ MonoBehaviour:
   async: 1
   downsampleSteps: 3
   registeredPaintableTexture: {fileID: 684674626}
-  cooldown: -2181.6118
+  cooldown: -2267.6648
   currentReader:
     dirty: 0
     requested: 0
@@ -4396,11 +4397,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.25
-  m_Speed: 10
+  m_Speed: 5
   m_Acceleration: 100
   avoidancePriority: 99
   m_AngularSpeed: 360
-  m_StoppingDistance: 0.02
+  m_StoppingDistance: 0.001
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -4652,7 +4653,7 @@ NavMeshAgent:
   m_Acceleration: 100
   avoidancePriority: 99
   m_AngularSpeed: 360
-  m_StoppingDistance: 0.02
+  m_StoppingDistance: 0.001
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
   m_AutoRepath: 1
