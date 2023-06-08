@@ -124,7 +124,7 @@ namespace CW.Common
 					return true;
 				}
 
-				if (UseKey != KeyCode.None && finger.Index == HOVER_FINGER_INDEX && CwInput.GetKeyWentDown(UseKey) == true)
+				if (UseKey != KeyCode.None && finger.Index == HOVER_FINGER_INDEX && CwInput.GetKeyIsHeld(UseKey) == true)
 				{
 					return true;
 				}
